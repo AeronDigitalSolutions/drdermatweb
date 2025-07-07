@@ -1,0 +1,662 @@
+.productDetailPage {
+    max-width: 100%;
+    margin: auto;
+    padding: 10px 30px;
+  }
+  
+  .productHeader {
+    display: flex;
+    gap: 50px;
+    width: 100%;
+    padding: 0px 4%;
+    margin: 2rem 9rem;
+  }
+  
+  .imageGallery {
+    width: 27%;
+  }
+  
+  .mainImage {
+    width: 100%;
+    max-width: 400px;
+    height: 330px;
+    object-fit: cover;
+    border: black 1px solid;
+  }
+  
+  
+  .thumbnailContainer {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+    position: absolute;
+    left: 8rem;
+    top: 8.3rem;
+    
+  }
+  
+  .thumbnail {
+    width: 75px;
+    height: 103px;
+    cursor: pointer;
+    border: #000 1px solid;
+  }
+  
+  .productInfo {
+    width: 60%;
+  }
+  
+  .productName {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .productRating{
+    background-color: rgb(107, 159, 255);
+    width: 12%;
+    padding: 0.2rem;
+    margin: 0.7rem;
+    border-radius: 20px;
+    color: white;
+    text-align: center;
+  }
+
+  .productDescription{
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.5;
+    font-family: Arial, sans-serif;
+    margin-right: 150px;
+    margin-left: 0px;
+    padding-left: 0px;
+  }
+  
+  .productPrice {
+    font-size: 1.5rem;
+    margin: 10px 0;
+    font-weight: bold;
+    color: black;
+  }
+  
+  .mrp {
+    text-decoration: line-through;
+    color: gray;
+    margin-left: 10px;
+    font-weight: lighter;
+    font-size: 1.25rem;
+    
+  }
+  
+  .discount {
+    margin: 10px;
+    color: #35513f;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-decoration: underline dotted #35513f;
+
+  }
+  
+  .addToCartButton {
+    width: 30%;
+    background-color: #155E95;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+    text-align: center;
+    padding: 10px;
+    margin: 15px ;
+    box-shadow: 0px 10px 18px rgba(19, 87, 138, 0.4);
+  }
+  
+  .tabs {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+  }
+
+  .tabContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5rem 2rem;
+    margin-bottom: 0px;
+  }
+  
+  
+  .tabButton {
+
+    padding: 10px 20px;
+    margin: 2rem;
+    border-radius: 10px;
+    border: none;
+    background-color: transparent;
+    font-family: Georgia, serif;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: rgb(114, 124, 142); /* Default color */
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  
+  .tabButton:hover {
+    color: rgb(21, 94, 149); /* Hover color */
+  }
+  
+  .activeTab {
+    color: rgb(21, 94, 149); /* Selected tab */
+  }
+  
+  
+  .featuresSection {
+    margin-top: 20px;
+  }
+  
+  .feature {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .featureImage {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
+  
+  
+.searchContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  width: 100%;
+}
+
+.searchBar {
+  position: relative; /* Make it a relative container */
+  display: flex;
+  align-items: center;
+  background: rgb(252 244 213); 
+  padding: 10px 20px 10px 20px;
+  border-radius: 20px;
+  width: 600px; /* Increased width */
+  max-width: 90%; /* Ensures responsiveness */
+  
+}
+
+.searchInput {
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color:rgb(252 244 213);
+  font-size: 1.0rem;
+  color: black;
+  font-family: Arial, sans-serif;
+  padding: 12px 50px 12px 15px; 
+  border-radius: 20px;
+}
+
+.searchIcon {
+  position: absolute;
+  right: 45px; /* Adjust to align properly */
+  color: black;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.resultTabContainer {
+  margin-top: 30px;
+  padding: 4% 15%;
+  gap: 40px;
+}
+
+.resultRow {
+  display: grid;
+  grid-template-columns: repeat(2 , 1fr); /* Responsive grid */
+  
+  align-items: center;
+  justify-content: center;
+  padding: 0 7%;
+  margin: 30px;
+}
+
+.resultImage {
+  width: 200px;
+  height: 250px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.resultText {
+  max-width: 500px;
+}
+
+.productDescription{
+  padding-bottom: 80px;
+  margin-right: 20px;
+  margin-top: 30px;
+}
+
+.resultTitle {
+  color: rgb(21, 94, 149);
+  font-size: 1.5rem;
+  text-decoration: underline;
+}
+
+.ingredientsSection {
+  margin: 0 20%;
+}
+
+.ingredientsHeading {
+  color: orange;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 10%;
+}
+
+.ingredientRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.ingredientImage {
+  width: 25%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.reviewSection {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  padding-top: 0%;
+}
+
+.reviewTitle {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.writeButton {
+  float: right;
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid #007bff;
+  color: #007bff;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.avgRating {
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+
+.ratingBreakdown {
+  margin: 15px 0;
+}
+
+.ratingRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0;
+}
+
+.ratingBar {
+  flex: 1;
+  height: 6px;
+  background: #ccc;
+  border-radius: 5px;
+}
+
+.mostRelevant {
+  margin-top: 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.reviewCard {
+  display: flex;
+  margin-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 1rem;
+  margin-right: 15px;
+}
+
+.reviewContent {
+  flex: 1;
+}
+
+.reviewTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.verified {
+  background-color: #e6f4ea;
+  color: #28a745;
+  padding: 2px 6px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+}
+
+.reviewDate {
+  margin-left: auto;
+  color: gray;
+  font-size: 0.8rem;
+}
+
+.reviewStars {
+  color: #ffa500;
+  font-size: 1rem;
+}
+
+.reviewText {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.detailsContainer {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+}
+
+.codShipping {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-bottom: 30px;
+}
+
+.codShipping img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 5px;
+}
+
+.contactSection {
+  margin: 30px 0;
+}
+
+.contactSection p {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.contactButton {
+  padding: 10px 25px;
+  font-size: 18px;
+  border: 2px solid #1976d2;
+  background-color: transparent;
+  color: #1976d2;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin: 40px 0;
+}
+
+.featureItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90px;
+}
+
+.featureItem img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 5px;
+}
+
+.paymentSection {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.paymentSection img {
+  margin: 10px auto;
+  max-width: 300px;
+}
+
+.securePayment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.securePayment img {
+  width: 20px;
+}
+
+.socials {
+  margin-top: 30px;
+}
+
+.socials img {
+  max-width: 250px;
+}
+
+.activeThumbnail {
+  border: 2px solid #000;
+  opacity: 1;
+}
+.thumbnail {
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+.thumbnail:hover {
+  opacity: 0.9;
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Mobile default: 2 per row */
+  gap: 20px;
+  padding: 20px;
+}
+
+.productCard {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  padding: 16px;
+  transition: transform 0.2s ease;
+  height: 100%;
+  min-height: 300px;
+
+
+}
+
+.productCard:hover {
+  transform: translateY(-4px);
+}
+
+/* Tablet & Laptop: 4 per row */
+@media screen and (min-width: 768px) {
+  .productGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+.ingredientItem{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.ingredientImage{
+  justify-self: center;  /* horizontal alignment */
+  align-self: center;    /* vertical alignment */
+  margin: 0 2rem ;
+  margin-bottom: 2rem;
+  width: 9.375rem;
+  height: 9.375rem;
+}
+
+.ingredientText{
+  display: flex;
+  flex-direction: column;
+  justify-content: left; /* Center vertically */
+  align-items: left;     /* Center horizontally */
+  text-align: left;      /* Center text */
+  font-size: 1.2rem;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .productHeader {
+    flex-direction: column;
+    margin: 1rem;
+    padding: 0;
+    gap: 20px;
+  }
+
+  .imageGallery,
+  .productInfo {
+    width: 100%;
+  }
+
+  .mainImage {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .thumbnailContainer {
+    position: static;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    justify-content: center;
+    left: 0;
+    top: 0;
+    margin: 1rem 0;
+  }
+
+  .productDescription {
+    margin: 1rem 0;
+    padding: 0;
+  }
+
+  .productRating {
+    width: fit-content;
+    margin: 0.5rem 0;
+  }
+
+  .addToCartButton {
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  .tabContainer {
+    flex-direction: column;
+    margin: 2rem 1rem 0 1rem;
+  }
+
+  .tabButton {
+    margin: 1rem 0;
+    font-size: 1.2rem;
+  }
+
+  .searchBar {
+    width: 90%;
+    padding: 8px 15px;
+  }
+
+  .searchInput {
+    font-size: 1rem;
+    padding: 10px 40px 10px 10px;
+  }
+
+  .searchIcon {
+    right: 20px;
+    font-size: 1.2rem;
+  }
+
+  .resultRow {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+    gap: 20px;
+  }
+
+  .resultImage {
+    width: 100%;
+    height: auto;
+  }
+
+  .resultText {
+    max-width: 100%;
+  }
+
+  .ingredientsSection {
+    margin: 0 5%;
+  }
+
+  .ingredientRow {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ingredientImage {
+    width: 100%;
+    height: auto;
+  }
+
+  .reviewSection {
+    padding: 10px;
+  }
+
+  .reviewCard {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .reviewTop {
+    flex-wrap: wrap;
+  }
+
+  .detailsContainer {
+    padding: 20px 10px;
+  }
+
+  .codShipping {
+    flex-direction: column;
+    gap: 20px;
+  }
+}

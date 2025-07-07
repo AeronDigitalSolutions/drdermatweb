@@ -1,0 +1,71 @@
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  background-color: white;
+  height: 70px;
+  width: 100%;
+  z-index: 100;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  font-family: "Arial", sans-serif;
+}
+
+.logo {
+  z-index: 101;
+}
+
+.navLinks {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.navLinks a {
+  font-size: 1rem;
+  color: black;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.navLinks a:hover {
+  text-decoration: underline;
+}
+
+.cartInfo {
+  cursor: pointer;
+}
+
+/* Hamburger menu icon - hidden on desktop */
+.hamburger {
+  display: none;
+  cursor: pointer;
+  z-index: 101;
+}
+
+/* ---------- Responsive Styles ---------- */
+@media (max-width: 1080px) {
+  .hamburger {
+    display: block;
+  }
+
+  .navLinks {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-end; /* aligns links to the right */
+    gap: 20px;
+    background-color: white;
+    padding: 20px 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    display: none;
+    z-index: 100;
+  }
+
+  .navLinks.open {
+   
+    display: flex;
+  }
+}

@@ -1,0 +1,168 @@
+/* CartPage.module.css */
+.cartContainer {
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+
+.cartContent {
+  display: grid;
+    grid-template-columns: 1fr 350px;
+  margin: 2rem 3.5rem;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: bisque;
+  padding: 5px 10px;
+  border-radius: 20px;
+  width: 100px;
+}
+
+.counterButton {
+  all: unset;
+  background-color: bisque;
+  color: red;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.countDisplay {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+
+.cartItems {
+    padding: 2rem 4rem;
+  flex: 1;
+}
+.cartItem {
+  display: grid;
+  grid-template-columns: repeat(2, 0.6fr);
+  gap: 15px;
+  margin-bottom: 20px;
+  width: 80%;         /* Increased width */
+  height: 150px;      /* Added height */
+  padding: 15px;      /* Optional: adds space inside the item */
+  border: 1px solid #ccc; /* Optional: visual separation */
+  border-radius: 10px;    /* Optional: rounded corners */
+  background-color: #f9f9f9; /* Optional: light background */
+}
+
+.productImage {
+  width: 100px;
+  height: auto;
+}
+
+.productTitle {
+  font-weight: bold;
+}
+
+.productCategory {
+  color: white;
+  font-size: 14px;
+}
+
+.productPrice {
+  color: red;
+  font-weight: bold;
+}
+
+
+.orderSummary {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.summaryRow, .summaryRowTotal {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.summaryRowTotal {
+  font-weight: bold;
+}
+
+.freeShipping {
+  font-size: 12px;
+  color: green;
+}
+
+.checkoutBtn {
+  width: 100%;
+  margin: 3rem 0;
+  padding: 10px;
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.bottomActions {
+  text-align: center;
+}
+
+.savingsInfo {
+  background-color: #0070c9;
+  color: white;
+  padding: 10px;
+  margin: 1.5rem 2rem 0 0;
+  border: none;
+  border-radius: 6px;
+}
+
+.couponSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 10px;
+}
+
+.applyCoupon {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+.paymentMethods img {
+  height: 30px;
+  gap: 5px;
+  margin: 2rem 5px;
+}
+
+.securePayment {
+  margin: 10px 0;
+}
+
+.socialIcons img {
+  height: 30px;
+  margin: 5px;
+}
+
+.deliverySection {
+  margin-top: 20px;
+}
+
+.payNowBtn {
+  background-color: #0056b3;
+  color: white;
+  padding: 10px 30px;
+  border-radius: 10px;
+  border: none;
+  margin-top: 10px;
+}

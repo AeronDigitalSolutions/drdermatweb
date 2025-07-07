@@ -1,0 +1,86 @@
+.featuredSection {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Wrapper for images */
+.sliderWrapper {
+  display: flex;
+}
+
+/* Each image container */
+.imageContainer {
+  flex: 0 0 100%;
+}
+
+/* The image itself */
+.imageSliderImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+/* Arrow Buttons - hidden by default */
+.imageSliderBtn {
+ 
+  position: absolute;
+  top: 50%;
+  /* transform: translateY(-50%); */
+  padding: 1rem;
+  cursor: pointer;
+  font-size: 2rem;
+  z-index: 2;
+  display: none;
+  background-color:transparent;
+}
+
+.imageHeading {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.prevBtn {
+  left: 1rem;
+}
+
+.nextBtn {
+  right: 1rem;
+}
+
+/* ----------- LAPTOP AND ABOVE (SHOW ALL IMAGES) ----------- */
+@media screen and (min-width: 768px) {
+  .sliderWrapper {
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .imageContainer {
+    flex: 0 0 30%; /* 3 images side by side */
+  }
+
+  .imageSliderBtn {
+     all: unset;
+    visibility: hidden;
+    display: none; /* Hide buttons on larger screens */
+  }
+}
+
+/* ----------- TABLET AND BELOW (SLIDER VIEW) ----------- */
+@media screen and (max-width: 768px) {
+  .sliderWrapper {
+    width: 100%;
+    transform: translateX(var(--translate-x, 0%));
+  }
+
+  .imageContainer {
+    flex: 0 0 100%;
+  }
+
+  .imageSliderBtn {
+    display: block;
+  }
+}

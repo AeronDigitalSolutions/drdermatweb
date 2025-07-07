@@ -1,0 +1,64 @@
+.container {
+  display: flex;
+  justify-content: center;
+  background-color: #fdf3e3;
+  padding: 4rem 1rem; /* Add top and bottom padding for spacing */
+  min-height: calc(100vh - 120px); /* Leave room for topbar and footer */
+  box-sizing: border-box;
+}
+
+.card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  padding-bottom: 15%;
+  padding-top: 15% ;
+  margin-bottom: 2rem; /* Adjust as needed */
+  margin-top: 2rem; /* Adjust as needed */
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.options {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.optionCard {
+  background-color: #fdf3e3;
+  padding: 1rem;
+  border-radius: 20px;
+  text-align: center;
+  width: 120px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.image {
+  border-radius: 50%;
+}
+
+.label {
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.button {
+  padding: 5px 10px;
+  background-color: #002d62;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+

@@ -1,0 +1,145 @@
+.card {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 10px 2rem;
+    border-radius: 10px;
+    background-color: #fff;
+    aspect-ratio : 4/1;
+  }
+  
+  .image {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+  }
+  
+  .info {
+    flex: 1;
+    margin-left: 20px;
+  }
+  
+  /* .verified {
+    color: #1da1f2;
+    font-size: 18px;
+  } */
+  
+  .reviews {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .address {
+    font-weight: bold;
+    margin-top: 5px;
+  }
+  
+  .name {
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .rating{
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .ratingReviewRow {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #555;
+    
+  }
+  
+  .description {
+    font-size: 14px;
+    color: #555;
+    margin-top: 6px;
+    text-align: left;
+    margin-right: 30%;
+  }
+  
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  
+  .call {
+    padding: 6px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    border: none;
+    font-size: 14px;
+    background-color: #1769aa;
+    color: white;
+  }
+  
+  .whatsapp {
+    padding: 6px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    border: rgb(28, 228, 28) solid 1px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #1769aa;
+  }
+  
+  .direction {
+    padding: 6px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    border: none;
+    font-size: 14px;
+    background-color: #1769aa;
+    color: white;
+  }
+  
+  .details {
+    padding: 6px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    border: none;
+    font-size: 14px;
+    background-color: #1769aa;
+    color: white;
+  }
+
+
+  .nameRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .name {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .ratingReviewRow {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  
+  
