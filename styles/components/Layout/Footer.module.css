@@ -2,6 +2,7 @@
   background-color: #0a4b83;
   color: white;
   padding: 45px 20px;
+margin-top: 5rem;;
 }
 
 .container {
@@ -70,7 +71,12 @@
     justify-content: space-between;
     align-items: flex-start;
   }
-
+.footer {
+  background-color: #0a4b83;
+  color: white;
+  padding: 45px 20px;
+margin-top: 5rem;;
+}
   .leftSection {
     flex: 1;
     max-width: 33%;

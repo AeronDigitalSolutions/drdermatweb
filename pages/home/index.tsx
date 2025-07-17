@@ -38,22 +38,22 @@ const index = () => {
        <ClinicCategories title="Find Top Dermatology Products" backgroundColor="white" textBg="#D9EBFD" border="2px solid #D9EBFD" />
 
        <div style={{
-        padding: "40px 20px",
+        padding: "16px 20px",
         backgroundColor: "#ffffff", // Optional: to visually separate from above
         marginTop: "1rem" // Creates spacing between sections
       }}>
         {/* <h1 style={{ textAlign: "center", marginBottom: "50px" }}>Exclusive Offers</h1> */}
         <div style={{
-        padding: "40px 20px",
+        padding: "0px 20px",
         backgroundColor: "#ffffff", // Optional: to visually separate from above
-        marginTop: "10px" // Creates spacing between sections
+        marginTop: "0px" // Creates spacing between sections
       }}>
-        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Exclusive Offers</h2>
+        <h2 style={{ textAlign: "center", marginBottom: "10px" }}>Exclusive Offers</h2>
         <div style={{
           display: "flex",
           gap: "20px",
           justifyContent: "center",
-          flexWrap: "wrap"
+          flexWrap: "nowrap"
         }}>
           <OfferCard title="" image="/offer1.png" />
           <OfferCard title="" image="/offer2.png" />
@@ -62,7 +62,7 @@ const index = () => {
       </div>
 
       {/* featured section */}
-      <h1 style={{ textAlign: "center", marginBottom: "50px" }}>Top Products Recommended By Dermatologists</h1>
+      <h1 style={{ textAlign: "center", marginBottom: "0px" }}>Top Products Recommended By Dermatologists</h1>
 
       <ProductCard products={productsCardListData.slice(0,12)}/>
 
@@ -73,11 +73,11 @@ const index = () => {
 
       {/* Section: Offers */}
       <div style={{
-        padding: "40px 20px",
+        padding: "10px 20px",
         backgroundColor: "#ffffff", // Optional: to visually separate from above
-        marginTop: "10px" // Creates spacing between sections
+        marginTop: "-40px" // Creates spacing between sections
       }}>
-        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Exclusive Offers</h2>
+        <h2 style={{ textAlign: "center", marginBottom: "10px" , marginTop: "10px" }}>Exclusive Offers</h2>
         <div style={{
           display: "flex",
           gap: "20px",

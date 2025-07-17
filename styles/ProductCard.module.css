@@ -29,7 +29,7 @@
   border-radius: 2px;
 }
 
-/* Grid Layout */
+/* Grid Layout (Default: Desktop) */
 .productGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -90,6 +90,9 @@
   font-size: 0.9rem;
   color: #777;
   margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Price Container */
@@ -98,22 +101,19 @@
   align-items: center;
   gap: 10px;
   font-size: 16px;
-  
   margin-bottom: 10px;
 }
 
 .productPrice {
   font-weight: bold;
   margin-left: 15px;
-
 }
 
 .productMrp {
   text-decoration: line-through;
   color: #777;
   font-size: 14px;
-    text-align: left;
-
+  text-align: left;
 }
 
 /* Discount with Dotted Underline */
@@ -122,10 +122,7 @@
   font-weight: bold;
   font-size: 14px;
   text-decoration: underline dotted #35513f;
-  top: 10px; /* Distance from the top */
-    margin-left: 40px;
-
-  right: 10px; /* Distance from the right */
+  margin-left: 40px;
 }
 
 /* Button */
@@ -146,4 +143,48 @@
 
 .productButton:hover {
   background-color: #0e3859;
+}
+
+/* ====================== Responsive ====================== */
+
+/* Tablet View: 3 columns */
+@media (max-width: 1024px) {
+  .productGrid {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 10px 20px;
+  }
+
+  .productImage {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+/* Mobile View: 2 columns */
+@media (max-width: 768px) {
+  .productGrid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 10px 0px;
+    gap: 1px;
+  }
+
+  .productImage {
+    width: 130px;
+    height: 130px;
+  }
+
+  .productName {
+    font-size: 1rem;
+    margin-top: 20px;
+  }
+
+  .productButton {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .productDiscount {
+    font-size: 12px;
+    margin-left: 20px;
+  }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import styles from '@/styles/components/Layout/clinicCard.module.css';
 import { useRouter } from 'next/router';
 import { Phone } from 'lucide-react';
+import MobileNavbar from './MobileNavbar';
 
 interface Clinic {
   id: number;
@@ -58,6 +59,7 @@ const ClinicCard: React.FC<{ clinic: Clinic, selectedImage?: string }> = ({ clin
         <button className={styles.direction}>📍 Direction</button>
         <button className={styles.details}>👁 See Details</button>
       </div>
+      <MobileNavbar></MobileNavbar>
     </div>
   );
 };

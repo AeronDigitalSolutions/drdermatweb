@@ -84,14 +84,15 @@
 
   .clinicTitle {
     font-size: 22px;
-    margin-top: 10px;
+    margin-top: 0px;
     padding-bottom: 10px;
   }
 
   .gridContainer {
-    grid-template-columns: repeat(2, 1fr);
-    padding: 10px;
-    gap: 15px;
+            grid-template-columns: repeat(3, 1fr);
+        padding: 8px 54px;
+        gap: 15px;
+        margin-bottom: 4rem;
   }
 
   .categoryCard {

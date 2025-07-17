@@ -2,85 +2,102 @@
   position: relative;
   overflow: hidden;
   width: 100%;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* Wrapper for images */
+/* ----------- Mobile: Scrollable Carousel ----------- */
 .sliderWrapper {
   display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
-/* Each image container */
 .imageContainer {
-  flex: 0 0 100%;
+  flex: 0 0 80%;
+  scroll-snap-align: start;
+  position: relative;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
 
-/* The image itself */
 .imageSliderImage {
   width: 100%;
   height: auto;
   object-fit: cover;
-  border-radius: 20px;
+  display: block;
+  border-radius: 0.5rem;
+      margin-left: .5rem;
+
 }
 
-/* Arrow Buttons - hidden by default */
-.imageSliderBtn {
- 
+.imageOverlay {
   position: absolute;
-  top: 50%;
-  /* transform: translateY(-50%); */
-  padding: 1rem;
-  cursor: pointer;
-  font-size: 2rem;
-  z-index: 2;
-  display: none;
-  background-color:transparent;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
 }
 
 .imageHeading {
-  text-align: center;
-  margin-top: 8px;
-  font-size: 1.2rem;
-  color: white;
+  color: #fff;
+  font-size: 1rem;
+  margin: 0;
 }
 
-.prevBtn {
-  left: 1rem;
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 0.75rem;
 }
 
-.nextBtn {
-  right: 1rem;
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ccc;
+  border-radius: 50%;
+  transition: background-color 0.3s;
 }
 
-/* ----------- LAPTOP AND ABOVE (SHOW ALL IMAGES) ----------- */
+.activeDot {
+  background-color: #000;
+}
+
+/* ----------- Desktop: 3 Images Side-by-Side ----------- */
 @media screen and (min-width: 768px) {
   .sliderWrapper {
+    overflow-x: hidden;
+    scroll-snap-type: none;
     justify-content: center;
+    padding: 0;
     gap: 1rem;
+    transform: none !important;
   }
 
   .imageContainer {
-    flex: 0 0 30%; /* 3 images side by side */
+    flex: 0 0 30%;
+    margin: 0;
   }
 
-  .imageSliderBtn {
-     all: unset;
-    visibility: hidden;
-    display: none; /* Hide buttons on larger screens */
-  }
-}
-
-/* ----------- TABLET AND BELOW (SLIDER VIEW) ----------- */
-@media screen and (max-width: 768px) {
-  .sliderWrapper {
-    width: 100%;
-    transform: translateX(var(--translate-x, 0%));
+  .imageOverlay {
+    position: static;
+    background: none;
+    text-align: center;
+    padding: 0;
   }
 
-  .imageContainer {
-    flex: 0 0 100%;
+  .imageHeading {
+    margin-top: 8px;
+    color: black;
   }
 
-  .imageSliderBtn {
-    display: block;
+  .dots {
+    display: none;
   }
 }
