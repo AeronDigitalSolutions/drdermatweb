@@ -24,7 +24,7 @@ const categories: Category[] = [
   { name: "Mental Wellness", image: "/cat-6.png" },
   { name: "Dental Care", image: "/cat-7.png" },
   { name: "More", image: "/cat-8.png" },
-  { name: "20+ More ", image: "/cat-9.png" },
+  { name: "20+ More ", image: "/cat-8.png" },
 ];
 
 const ClinicCategories: React.FC<ClinicCategoryProps> = ({
