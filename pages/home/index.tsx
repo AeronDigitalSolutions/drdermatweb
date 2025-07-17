@@ -67,7 +67,7 @@ const index = () => {
       <ProductCard products={productsCardListData.slice(0,12)}/>
 
       {/* //8 boxes  find top derma clinic*/}
-      <div style={{  padding: "40px 0 40px 0"}}>
+      <div style={{  padding: "0px 0 40px 0"}}>
       <ClinicCategories title="Popular Product Categories" backgroundColor="#D3D3D3" textBg="white" border="7px solid white"/>
       </div>
 
