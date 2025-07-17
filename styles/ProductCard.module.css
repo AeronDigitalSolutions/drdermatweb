@@ -167,6 +167,14 @@
     padding: 10px 0px;
     gap: 1px;
   }
+  .shopSection{
+    width: 100%;
+    padding: 0px;
+    display: grid
+;
+    grid-template-rows: auto 1fr;
+    text-align: center;
+  }
 
   .productImage {
     width: 130px;

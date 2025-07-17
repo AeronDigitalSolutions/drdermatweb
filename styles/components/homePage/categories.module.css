@@ -1,4 +1,3 @@
-/* Container Styling */
 .cliniContainer {
   background-color: white;
   padding: 2rem 4rem;
@@ -10,12 +9,12 @@
   text-align: center;
   margin-top: 20px;
   padding-bottom: 20px;
+      text-decoration: underline;
 }
 
-/* Responsive Grid Layout */
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 cards per row on large screens */
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   justify-content: center;
   padding: 20px 40px;
@@ -26,26 +25,24 @@
 
 @media (max-width: 768px) {
   .gridContainer {
-    grid-template-columns: repeat(2, 1fr); /* 2 cards per row on tablets and below */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-
-/* Tablet View: 2 cards per row */
 @media (min-width: 768px) {
   .gridContainer {
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
   }
 }
-/* Square Card Styling */
+
 .categoryCard {
-  background: #D9EBFD;
-  aspect-ratio: 1 / 1;           /* Maintains square shape */
+  background: #d9ebfd;
+  aspect-ratio: 1 / 1;
   width: 80%;
   max-width: 250px;
   text-align: center;
-  border-bottom: 15px solid #D9EBFD;
+  border-bottom: 15px solid #d9ebfd;
   transition: transform 0.3s;
   cursor: pointer;
   border-radius: 10px;
@@ -56,7 +53,6 @@
   transform: scale(1.05);
 }
 
-/* Image Styling */
 .categoryImg {
   width: 100%;
   height: 100%;
@@ -66,16 +62,12 @@
   display: block;
 }
 
-/* Text Styling */
 .categoryText {
   font-size: 16px;
   color: #000000;
   font-weight: 300;
   padding-top: 5px;
 }
-
-/* max-width -> anything smaller or equal to x. */
-/* min-width-> anything x pixels and onwards (greater) */
 
 @media (max-width: 480px) {
   .cliniContainer {
@@ -86,13 +78,14 @@
     font-size: 22px;
     margin-top: 0px;
     padding-bottom: 10px;
+    text-decoration: underline;
   }
 
   .gridContainer {
-            grid-template-columns: repeat(3, 1fr);
-        padding: 8px 54px;
-        gap: 15px;
-        margin-bottom: 4rem;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 8px 54px;
+    gap: 15px;
+    margin-bottom: 4rem;
   }
 
   .categoryCard {
@@ -104,5 +97,17 @@
 
   .categoryText {
     font-size: 14px;
+  }
+
+  /* Show "More" only on mobile */
+  .mobileOnly {
+    display: block !important;
+  }
+}
+
+/* Hide on desktop */
+@media (min-width: 481px) {
+  .mobileOnly {
+    display: none !important;
   }
 }

@@ -12,6 +12,7 @@ import ClinicCategories from "@/components/homePage/categories";
 import OfferCard from "@/components/homePage/offerCard";
 import FeaturedSection from "@/components/Layout/FeaturedSection";
 import {productsCardListData} from "@/data/productsCardListData";
+import Offer from "./Offer";
 
 
 const index = () => {
@@ -43,55 +44,58 @@ const index = () => {
         marginTop: "1rem" // Creates spacing between sections
       }}>
         {/* <h1 style={{ textAlign: "center", marginBottom: "50px" }}>Exclusive Offers</h1> */}
-        <div style={{
+       
+      {/* featured section */}
+      <h1 style={{ textAlign: "center", marginBottom: "0px" , textDecoration:"underline"}}>Top Products</h1>
+
+      <ProductCard products={productsCardListData.slice(0,12)}/>
+
+
+       <div style={{
         padding: "0px 20px",
         backgroundColor: "#ffffff", // Optional: to visually separate from above
         marginTop: "0px" // Creates spacing between sections
       }}>
-        <h2 style={{ textAlign: "center", marginBottom: "10px" }}>Exclusive Offers</h2>
+        <h2 style={{ textAlign: "center", marginBottom: "10px" , textDecoration:"underline" }}>Exclusive Offers</h2>
         <div style={{
           display: "flex",
           gap: "20px",
           justifyContent: "center",
           flexWrap: "nowrap"
         }}>
-          <OfferCard title="" image="/offer1.png" />
-          <OfferCard title="" image="/offer2.png" />
+          <Offer></Offer>
         </div>
       </div>
       </div>
 
-      {/* featured section */}
-      <h1 style={{ textAlign: "center", marginBottom: "0px" }}>Top Products Recommended By Dermatologists</h1>
-
-      <ProductCard products={productsCardListData.slice(0,12)}/>
 
       {/* //8 boxes  find top derma clinic*/}
       <div style={{  padding: "0px 0 40px 0"}}>
       <ClinicCategories title="Popular Product Categories" backgroundColor="#D3D3D3" textBg="white" border="7px solid white"/>
       </div>
 
-      {/* Section: Offers */}
+     
+       {/* //8 boxes  find top derma clinic*/}
+      <ClinicCategories title="Find The Best Treatment Plans" backgroundColor="white" textBg="#D9EBFD" border="2px solid #D9EBFD"  />
+
+    </div>
+
+     {/* Section: Offers */}
       <div style={{
         padding: "10px 20px",
         backgroundColor: "#ffffff", // Optional: to visually separate from above
         marginTop: "-40px" // Creates spacing between sections
       }}>
-        <h2 style={{ textAlign: "center", marginBottom: "10px" , marginTop: "10px" }}>Exclusive Offers</h2>
+        <h2 style={{ textAlign: "center", marginBottom: "10px" , marginTop: "50px", textDecoration:"underline" }}>Exclusive Offers</h2>
         <div style={{
           display: "flex",
           gap: "20px",
           justifyContent: "center",
           flexWrap: "wrap"
         }}>
-          <OfferCard title="" image="/offer1.png" />
-          <OfferCard title="" image="/offer2.png" />
+<Offer></Offer>
         </div>
       </div>
-       {/* //8 boxes  find top derma clinic*/}
-      <ClinicCategories title="Find The Best Treatment Plans" backgroundColor="white" textBg="#D9EBFD" border="2px solid #D9EBFD"  />
-
-    </div>
 
 
        {/* footer */}
