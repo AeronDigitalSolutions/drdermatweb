@@ -98,10 +98,13 @@
 /* Price Container */
 .productPriceContainer {
   display: flex;
-  align-items: center;
-  gap: 10px;
+
+  gap: 5px;
   font-size: 16px;
   margin-bottom: 10px;
+  align-items: center;
+  justify-content: center;
+
 }
 
 .productPrice {
