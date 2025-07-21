@@ -164,7 +164,7 @@
 }
 
 /* Mobile View: 2 columns */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .productGrid {
     grid-template-columns: repeat(2, 1fr);
     padding: 10px 0px;

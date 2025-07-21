@@ -13,6 +13,8 @@ import OfferCard from "@/components/homePage/offerCard";
 import FeaturedSection from "@/components/Layout/FeaturedSection";
 import {productsCardListData} from "@/data/productsCardListData";
 import Offer from "./Offer";
+import Treatment from "./Treatment";
+import HappyStories from "./HappyStories";
 
 
 const index = () => {
@@ -94,6 +96,45 @@ const index = () => {
           flexWrap: "wrap"
         }}>
 <Offer></Offer>
+        </div>
+      </div>
+
+
+
+     {/* Section: Offers */}
+      <div style={{
+        padding: "10px 20px",
+        backgroundColor: "#ffffff", // Optional: to visually separate from above
+        marginTop: "-40px" // Creates spacing between sections
+      }}>
+        <h2 style={{ textAlign: "center", marginBottom: "10px" , marginTop: "50px", textDecoration:"underline" }}>Treatment Procedure</h2>
+        <div style={{
+          display: "flex",
+          gap: "20px",
+          justifyContent: "center",
+          flexWrap: "wrap"
+        }}>
+<Treatment/>
+        </div>
+      </div>
+
+
+
+      
+     {/* Section: Offers */}
+      <div style={{
+        padding: "10px 20px",
+        backgroundColor: "#ffffff", // Optional: to visually separate from above
+        marginTop: "-40px" // Creates spacing between sections
+      }}>
+        <h2 style={{ textAlign: "center", marginBottom: "10px" , marginTop: "50px", textDecoration:"underline" }}>Happy Stories</h2>
+        <div style={{
+          display: "flex",
+          gap: "20px",
+          justifyContent: "center",
+          flexWrap: "wrap"
+        }}>
+<HappyStories/>
         </div>
       </div>
 
