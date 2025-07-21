@@ -7,7 +7,7 @@ const calculateDiscount = (price: number, mrp: number): string => {
 export const productsCardListData: Product[] = [
   {
     id: 1,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product1.png", "/product1.png"],
     name: "Tata 1mg Zinc",
     size: "bottle of 75.0 ml Shampoo",
     price: 212,
@@ -24,7 +24,7 @@ export const productsCardListData: Product[] = [
   },
   {
     id: 2,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Patanjali Ayurveda",
     size: "jar of 1.0 kg Paste",
     price: 248,
@@ -41,7 +41,7 @@ export const productsCardListData: Product[] = [
   },
   {
     id: 3,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Tata 1mg Zinc",
     size: "bottle of 75.0 ml Shampoo",
     price: 212,
@@ -58,7 +58,7 @@ export const productsCardListData: Product[] = [
   },
   {
     id: 4,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Patanjali Ayurveda",
     size: "jar of 1.0 kg Paste",
     price: 248,
@@ -75,7 +75,7 @@ export const productsCardListData: Product[] = [
   },
   {
     id: 5,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Tata 1mg Zinc",
     size: "bottle of 75.0 ml Shampoo",
     price: 212,
@@ -92,7 +92,7 @@ export const productsCardListData: Product[] = [
   },
   {
     id: 6,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Patanjali Ayurveda",
     size: "jar of 1.0 kg Paste",
     price: 248,
@@ -109,7 +109,7 @@ export const productsCardListData: Product[] = [
   },
   {
     id: 7,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Tata 1mg Zinc",
     size: "bottle of 75.0 ml Shampoo",
     price: 212,
@@ -126,7 +126,7 @@ export const productsCardListData: Product[] = [
   },
   {
     id: 8,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Patanjali Ayurveda",
     size: "jar of 1.0 kg Paste",
     price: 248,
@@ -144,7 +144,7 @@ export const productsCardListData: Product[] = [
   // Add more products as needed
   {
     id: 9,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Tata 1mg Zinc",
     size: "bottle of 75.0 ml Shampoo",
     price: 212,
@@ -161,7 +161,7 @@ export const productsCardListData: Product[] = [
   },
   {
     id: 10,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Patanjali Ayurveda",
     size: "jar of 1.0 kg Paste",
     price: 248,
@@ -178,7 +178,7 @@ export const productsCardListData: Product[] = [
   },
   {
     id: 11,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Tata 1mg Zinc",
     size: "bottle of 75.0 ml Shampoo",
     price: 212,
@@ -195,7 +195,7 @@ export const productsCardListData: Product[] = [
   },
   {
     id: 12,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Tata 1mg Zinc",
     size: "bottle of 75.0 ml Shampoo",
     price: 212,
@@ -212,7 +212,7 @@ export const productsCardListData: Product[] = [
   },
   {
     id: 13,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Patanjali Ayurveda",
     size: "jar of 1.0 kg Paste",
     price: 248,
@@ -229,7 +229,7 @@ export const productsCardListData: Product[] = [
   },
   {
     id: 14,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Tata 1mg Zinc",
     size: "bottle of 75.0 ml Shampoo",
     price: 212,
@@ -246,7 +246,7 @@ export const productsCardListData: Product[] = [
   },
   {
     id: 15,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Tata 1mg Zinc",
     size: "bottle of 75.0 ml Shampoo",
     price: 212,
@@ -263,7 +263,7 @@ export const productsCardListData: Product[] = [
   },
   {
     id: 16,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Patanjali Ayurveda",
     size: "jar of 1.0 kg Paste",
     price: 248,
@@ -280,7 +280,7 @@ export const productsCardListData: Product[] = [
   },
   {
     id: 17,
-    image: ["/product1.jpg", "/product2.jpg", "/product3.jpg"],
+    image: ["/product1.png", "/product2.jpg", "/product3.jpg"],
     name: "Tata 1mg Zinc",
     size: "bottle of 75.0 ml Shampoo",
     price: 212,

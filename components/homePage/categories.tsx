@@ -16,15 +16,15 @@ interface ClinicCategoryProps {
 }
 
 const categories: Category[] = [
-  { name: "General Physician", image: "/cat-1.png" },
-  { name: "Skin & Hair", image: "/cat-2.png" },
-  { name: "Women's Health", image: "/cat-3.png" },
-  { name: "Child Specialist", image: "/cat-4.png" },
-  { name: "Ear, Nose, Throat", image: "/cat-5.png" },
-  { name: "Mental Wellness", image: "/cat-6.png" },
-  { name: "Dental Care", image: "/cat-7.png" },
-  { name: "More", image: "/cat-8.png" },
-  { name: "20+ More ", image: "/cat-8.png" },
+  { name: "General Physician", image: "/genral.png" },
+  { name: "Skin & Hair", image: "/women.png" },
+  { name: "Women's Health", image: "/skin_hair.png" },
+  { name: "Child Specialist", image: "/child.png" },
+  { name: "Ear, Nose, Throat", image: "/ear.png" },
+  { name: "Mental Wellness", image: "/mental.png" },
+  { name: "Dental Care", image: "/dental.png" },
+  { name: "More", image: "/twenty.png" },
+  { name: "20+ More ", image: "/twenty.png" },
 ];
 
 const ClinicCategories: React.FC<ClinicCategoryProps> = ({
