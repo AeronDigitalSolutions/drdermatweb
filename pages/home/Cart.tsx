@@ -7,7 +7,7 @@ import { GoLocation } from "react-icons/go";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import MobileNavbar from "@/components/Layout/MobileNavbar";
-import product1 from "@/public/product1.jpg";
+import product1 from "@/public/product1.png";
 import product2 from "@/public/product2.jpg";
 
 const CartPage: React.FC = () => {
