@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import styles from "@/styles/Treatment.module.css";
+import styles from "@/styles/HappyStories.module.css";
 
 const YOUTUBE_REELS = [
   "https://www.youtube.com/embed/LjpGh3jfLn4?autoplay=1&mute=1&controls=0&loop=1&playlist=LjpGh3jfLn4",
@@ -8,10 +8,7 @@ const YOUTUBE_REELS = [
 ];
 
 
-
-
-
-const Treatment = () => {
+const HappyStories = () => {
   const [current, setCurrent] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -76,4 +73,4 @@ const Treatment = () => {
   );
 };
 
-export default Treatment;
+export default HappyStories;
