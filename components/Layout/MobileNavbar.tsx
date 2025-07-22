@@ -13,7 +13,7 @@ const MobileNavbar = () => {
       </div>
       <div className={styles.navItem}>
         <MdOutlineAssignment className={styles.icon} />
-        <span>Book Appointment</span>
+        <span>Book <br/>Appointment</span>
       </div>
       <div className={`${styles.navItem} ${styles.centerItem}`}>
         <MdFolder className={styles.icon} />
