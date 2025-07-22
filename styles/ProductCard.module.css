@@ -238,7 +238,7 @@ grid-template-columns: repeat(2, minmax(0, 1fr));
   .productButton {
     font-size: 13px;
     padding: 6px;
-    width: 90%;
+    width: 75%;
   }
 .shopSection {
   padding: 10px; /* or 10px 10px; */

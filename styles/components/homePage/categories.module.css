@@ -140,7 +140,7 @@
 
   .gridContainer {
     grid-template-columns: repeat(3, 1fr); /* More suitable for very small screens */
-    padding: 8px 30px;
+    padding: 8px 45px;
     gap: 5px;
     margin-bottom: 3rem;
   }
