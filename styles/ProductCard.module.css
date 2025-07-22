@@ -199,3 +199,55 @@
     margin-left: 20px;
   }
 }
+
+
+/* Extra Small Devices: 370px and below */
+@media (max-width: 370px) {
+  .productGrid {
+grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    padding: 5px 0px;
+    justify-items: center;
+  }
+
+  .productImage {
+    width: 110px;
+    height: 110px;
+  }
+
+  .productName {
+    font-size: 0.95rem;
+    margin-top: 15px;
+  }
+
+  .productSize {
+    font-size: 0.8rem;
+  }
+
+  .productPriceContainer {
+    font-size: 14px;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .productDiscount {
+    font-size: 11px;
+    margin-left: 10px;
+  }
+
+  .productButton {
+    font-size: 13px;
+    padding: 6px;
+    width: 90%;
+  }
+.shopSection {
+  padding: 10px; /* or 10px 10px; */
+}
+
+  .bestsellerBadge {
+    font-size: 7px;
+    padding: 3px 6px;
+    top: 40%;
+    left: 12%;
+  }
+}
