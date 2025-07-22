@@ -5,6 +5,8 @@ import { FaStar, FaRegHeart } from 'react-icons/fa';
 import { FiShare2 } from 'react-icons/fi';
 import product1 from "@/public/demo-clinic.jpg";
 import Image from 'next/image';
+import blackImage from '@/public/card-2.png';
+
 
 const imageList = [
   product1,
@@ -58,12 +60,13 @@ export default function ProductDetail() {
             <p className={styles.mrp}>MRP: <span>₹6,599</span></p>
             <p className={styles.price}>Price: <span>₹5,399</span> <span className={styles.discount}>18% off</span></p>
             <p className={styles.tax}>Inclusive of all taxes</p>
+            <p className={styles.delivery}>Delivery by 10 today</p>
             <div className={styles.memberPrice}>₹5,129 for Premium Member</div>
           </div>
 
           <div className={styles.paymentInfo}>
             <p>3 interest free payments of ₹1799.68 with <span className={styles.simpl}>Simpl</span></p>
-            <p className={styles.cashback}>Get Rs 300 Cashback (New Users) or Rs 150 cashback (Repeat users) on orders above Rs 2,599 via Simpl pay-in-3</p>
+            <p >Get Rs 300 Cashback (New Users) or Rs 150 cashback (Repeat users)<br/> on orders above Rs 2,599 via Simpl pay-in-3</p>
           </div>
 
           <div className={styles.actions}>
@@ -84,40 +87,11 @@ export default function ProductDetail() {
         </div>
       </div>
 
-      {/* Additional Details Section Below */}
-      <div className={styles.detailsSection}>
-        <h2 className={styles.sectionHeading}>Product Details</h2>
-        <div className={styles.detailsGrid}>
-          <div>
-            <p className={styles.detailLabel}>Delivery Location</p>
-            <p>Delhi - 110001</p>
-          </div>
-          <div>
-            <p className={styles.detailLabel}>Best Before</p>
-            <p>Jul 2026</p>
-          </div>
-          <div>
-            <p className={styles.detailLabel}>Offers</p>
-            <ul>
-              <li>Get Extra 18% off</li>
-              <li>Rs 300 Cashback via Simpl</li>
-            </ul>
-          </div>
-          <div>
-            <p className={styles.detailLabel}>Return Policy</p>
-            <p>7 Days Return</p>
-          </div>
-          <div>
-            <p className={styles.detailLabel}>Shelf Life</p>
-            <p>24 Months</p>
-          </div>
-          <div>
-            <p className={styles.detailLabel}>Sold By</p>
-            <p>HealthKart Wellness Solutions</p>
-          </div>
-        </div>
-      </div>
 
+
+
+      {/* Additional Details Section Below */}
+     
 <section className={styles.detailsSection}>
       <h2 className={styles.title}>Product Details of MuscleBlaze Micronised Creatine Monohydrate, 100 g</h2>
       <div className={styles.contentWrapper}>
@@ -149,6 +123,85 @@ export default function ProductDetail() {
       </div>
     </section>
 
+
+<section>
+<div className={styles.detailsSection}>
+      <div className={styles.infoBox}>
+        <h2 className={styles.title}>Product Information of MuscleBlaze Micronised Creatine Monohydrate, 100 g</h2>
+        <h4 className={styles.subheading}>Supplement Info</h4>
+
+        <div className={styles.section}>
+          <h3>Additional Information</h3>
+          <div className={styles.infoGrid}>
+            <div>
+              <strong>Country of Origin</strong>
+              <p>India</p>
+            </div>
+            <div>
+              <strong>Flavour</strong>
+              <p>Unflavoured</p>
+            </div>
+            <div>
+              <strong>Brand Origin</strong>
+              <p>Indian</p>
+            </div>
+            <div>
+              <strong>Form</strong>
+              <p>Powder</p>
+            </div>
+            <div>
+              <strong>Goal</strong>
+              <p>Increases Stamina, Muscle Building</p>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.section}>
+          <h3>General Traits</h3>
+          <div className={styles.infoGrid}>
+            <div>
+              <strong>Weight</strong>
+              <p>100 g</p>
+            </div>
+            <div>
+              <strong>Number of Servings</strong>
+              <p>33</p>
+            </div>
+            <div>
+              <strong>Serving Size</strong>
+              <p>3 g</p>
+            </div>
+            <div>
+              <strong>Vegetarian/Non-Vegetarian</strong>
+              <p>Vegetarian</p>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.section}>
+          <h3>Other Traits</h3>
+          <div className={styles.infoGrid}>
+            <div>
+              <strong>Product Code/UPC</strong>
+              <p>8906165788642</p>
+            </div>
+            <div>
+              <strong>Flavour Base</strong>
+              <p>Others</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.imageBox}>
+        <Image src={blackImage} alt="Creatine Label" className={styles.image} />
+      </div>
+    </div>
+
+
+</section>
+
     </div>
   );
 }
+

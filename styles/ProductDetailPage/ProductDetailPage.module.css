@@ -1,5 +1,5 @@
 .wrapper {
-  padding: 2rem;
+margin: 1rem 11rem;
   font-family: 'Inter', sans-serif;
   background-color: #fff;
 }
@@ -118,6 +118,7 @@
   border-radius: 4px;
   margin-top: 6px;
   font-size: 14px;
+  width: 27%;
 }
 
 .paymentInfo {
@@ -307,6 +308,14 @@
   cursor: pointer;
 }
 
+.delivery{
+  font-size: 14px;
+  padding: 5px 2px;
+  font-weight: 500;
+  border: 1px solid #00b5b7;
+  width: 150px;
+  border-radius: 5px;
+}
 @media screen and (max-width: 768px) {
   .contentWrapper {
     flex-direction: column;
@@ -324,4 +333,66 @@
     padding: 1.5rem;
     border-left: none;
   }
+}
+
+.wrapper {
+  display: flex;
+  background: #ffffff;
+  font-family: 'Inter', sans-serif;
+  padding: 2rem 1rem;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.subheading {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.infoBox {
+  flex: 1;
+  min-width: 320px;
+}
+
+.imageBox {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 300px;
+}
+
+.image {
+  width: 100%;
+  max-width: 450px;
+  object-fit: contain;
+}
+
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem 2rem;
+}
+
+.infoGrid div p {
+  margin: 0.2rem 0 0;
+  color: #333;
 }
