@@ -1,8 +1,9 @@
 .wrapper {
-  width: 100%;
+  width: 90%;
   overflow: hidden;
+  margin: 0 auto;
   padding: 0;
-  margin: 0;
+  height: 50%;
 }
 
 .slider {
@@ -19,7 +20,7 @@
 }
 
 .card {
-  flex: 0 0 50%;
+  flex: 10 20 30%;
   scroll-snap-align: center;
   transition: transform 0.3s ease, opacity 0.3s ease;
   border-radius: 0;
@@ -27,8 +28,9 @@
   opacity: 0.5;
   transform: scale(0.9);
   background: #000;
-  aspect-ratio: 16 / 9;
-  height: auto;
+  aspect-ratio: 9 / 16;
+  position: relative;
+  z-index: 1;
 }
 
 .card iframe {
@@ -36,6 +38,10 @@
   height: 100%;
   border: none;
   display: block;
+}
+
+.card:hover {
+  cursor: pointer;
 }
 
 .active {
@@ -63,7 +69,7 @@
   background-color: #ccc;
   border-radius: 50%;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background-color 0.3s;
 }
 
 .activeDot {
@@ -72,7 +78,7 @@
 
 @media (max-width: 480px) {
   .card {
-    flex: 0 0 50%;
+    flex: 0 0 70%;
     aspect-ratio: 9 / 16;
     height: auto;
     border-radius: 0;
