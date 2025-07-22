@@ -72,3 +72,10 @@
     display: flex;
   }
 }
+
+@media (max-width: 370px) {
+
+  .logo{
+margin-left: 3rem;
+  }
+}
