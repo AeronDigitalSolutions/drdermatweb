@@ -4,15 +4,17 @@ import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { FaStar, FaRegHeart } from 'react-icons/fa';
 import { FiShare2 } from 'react-icons/fi';
 import product1 from "@/public/demo-clinic.jpg";
+import product2 from "@/public/womens_health.jpg";
+import product3 from "@/public/product2.jpg";
+import product4 from "@/public/product3.jpg";
 import Image from 'next/image';
-import blackImage from '@/public/card-2.png';
 
 
 const imageList = [
   product1,
-  product1,
-  product1,
-  product1,
+  product2,
+  product3,
+  product4,
 ];
 
 export default function ProductDetail() {
@@ -60,7 +62,7 @@ export default function ProductDetail() {
             <p className={styles.mrp}>MRP: <span>₹6,599</span></p>
             <p className={styles.price}>Price: <span>₹5,399</span> <span className={styles.discount}>18% off</span></p>
             <p className={styles.tax}>Inclusive of all taxes</p>
-            <p className={styles.delivery}>Delivery by 10 today</p>
+            <p className={styles.delivery}>Delivery by 10:00 PM today</p>
             <div className={styles.memberPrice}>₹5,129 for Premium Member</div>
           </div>
 
@@ -79,11 +81,7 @@ export default function ProductDetail() {
             <button className={styles.buyNow}>Buy Now</button>
           </div>
 
-          <div className={styles.weightSwitch}>
-            <p>Weight</p>
-            <button onClick={() => setUnit('KG')} className={unit === 'KG' ? styles.activeUnit : ''}>KG</button>
-            <button onClick={() => setUnit('LB')} className={unit === 'LB' ? styles.activeUnit : ''}>LB</button>
-          </div>
+          
         </div>
       </div>
 
@@ -123,83 +121,86 @@ export default function ProductDetail() {
       </div>
     </section>
 
+{/* Existing content remains unchanged... */}
 
-<section>
-<div className={styles.detailsSection}>
-      <div className={styles.infoBox}>
-        <h2 className={styles.title}>Product Information of MuscleBlaze Micronised Creatine Monohydrate, 100 g</h2>
-        <h4 className={styles.subheading}>Supplement Info</h4>
+{/* Screenshot-Based Section - Added Below */}
+<section className={styles.creatineInfoSection}>
+  <h2 className={styles.creatineTitle}>Product Information of MuscleBlaze Micronised Creatine Monohydrate, 100 g</h2>
+  <p className={styles.subTitle}>Supplement Info</p>
 
-        <div className={styles.section}>
-          <h3>Additional Information</h3>
-          <div className={styles.infoGrid}>
-            <div>
-              <strong>Country of Origin</strong>
-              <p>India</p>
-            </div>
-            <div>
-              <strong>Flavour</strong>
-              <p>Unflavoured</p>
-            </div>
-            <div>
-              <strong>Brand Origin</strong>
-              <p>Indian</p>
-            </div>
-            <div>
-              <strong>Form</strong>
-              <p>Powder</p>
-            </div>
-            <div>
-              <strong>Goal</strong>
-              <p>Increases Stamina, Muscle Building</p>
-            </div>
-          </div>
-        </div>
+  <div className={styles.creatineWrapper}>
+    <div className={styles.infoLeft}>
+      <h4 className={styles.infoHeading}>Additional Information</h4>
+      <ul>
+        <li><strong>Country of Origin:</strong> India</li>
+        <li><strong>Flavour:</strong> Unflavoured</li>
+        <li><strong>Brand Origin:</strong> Indian</li>
+        <li><strong>Form:</strong> Powder</li>
+        <li><strong>Goal:</strong> Increases Stamina, Muscle Building</li>
+      </ul>
 
-        <div className={styles.section}>
-          <h3>General Traits</h3>
-          <div className={styles.infoGrid}>
-            <div>
-              <strong>Weight</strong>
-              <p>100 g</p>
-            </div>
-            <div>
-              <strong>Number of Servings</strong>
-              <p>33</p>
-            </div>
-            <div>
-              <strong>Serving Size</strong>
-              <p>3 g</p>
-            </div>
-            <div>
-              <strong>Vegetarian/Non-Vegetarian</strong>
-              <p>Vegetarian</p>
-            </div>
-          </div>
-        </div>
+      <h4 className={styles.infoHeading}>General Traits</h4>
+      <ul>
+        <li><strong>Weight:</strong> 100 g</li>
+        <li><strong>Number of Servings:</strong> 33</li>
+        <li><strong>Serving Size:</strong> 3 g</li>
+        <li><strong>Vegetarian/Non-Vegetarian:</strong> Vegetarian</li>
+      </ul>
 
-        <div className={styles.section}>
-          <h3>Other Traits</h3>
-          <div className={styles.infoGrid}>
-            <div>
-              <strong>Product Code/UPC</strong>
-              <p>8906165788642</p>
-            </div>
-            <div>
-              <strong>Flavour Base</strong>
-              <p>Others</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.imageBox}>
-        <Image src={blackImage} alt="Creatine Label" className={styles.image} />
-      </div>
+      <h4 className={styles.infoHeading}>Other Traits</h4>
+      <ul>
+        <li><strong>Product Code/UPC:</strong> 8906165788642</li>
+        <li><strong>Flavour Base:</strong> Others</li>
+      </ul>
     </div>
 
-
+    <div className={styles.infoRight}>
+      <div className={styles.imageBlock}>
+        <p className={styles.creatineLabel}>Creatine Monohydrate.</p>
+        <p className={styles.creatineSubLabel}>CONTAINS NO DOPING INGREDIENTS (As per WADA/NADA list)</p>
+        <p className={styles.creatineCompany}>Bright Lifecare Pvt. Ltd., CPCB REGN. No. <br />BO-23-000-08-AAECB5311J-23</p>
+        <div className={styles.fssai}>
+          <p>Lic. No. <strong>10015064000576</strong></p>
+        </div>
+        <div className={styles.iconRow}>
+          <div className={styles.trashIcon}></div>
+          <div className={styles.recycleIcon}></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
+
+{/* MuscleBlaze Creatine Information Section */}
+<section className={styles.creatineSection}>
+  <h2 className={styles.creatineHeading}>
+    Other Information of MuscleBlaze Micronised Creatine Monohydrate, 100 g
+  </h2>
+  <p className={styles.creatineSubtext}>
+    MuscleBlaze® Micronised Creatine Monohydrate is designed for those who refuse to settle for average. 
+    With 3g of ultra-pure, fast-absorbing creatine monohydrate per serving, it fuels your muscles with continuous energy, 
+    helping you train harder, lift heavier, and perform longer.
+  </p>
+  <p className={styles.creatineSubtext}>
+    This unflavoured creatine powder blends seamlessly into water, protein shakes, or fruit juice without any grittiness or bloating. 
+    Micronised for superior mixability, it ensures better absorption for maximum performance and minimal waste. 
+    Whether you’re an athlete, bodybuilder, or fitness enthusiast, this formula is built to support muscle strength, endurance, 
+    and overall workout efficiency.
+  </p>
+
+  <div className={styles.benefitsSection}>
+    <h3 className={styles.benefitsHeading}>Product Benefits</h3>
+    <ul className={styles.benefitList}>
+      <li><strong>Increases Strength & Power</strong> – Helps push beyond limits for peak performance.</li>
+      <li><strong>Supports Muscle Growth</strong> – Ideal for those looking to build lean mass.</li>
+      <li><strong>Enhances Stamina & Endurance</strong> – Delays fatigue for prolonged training sessions.</li>
+      <li><strong>Faster Recovery</strong> – Reduces muscle soreness post-workout, ensuring quicker recovery.</li>
+      <li><strong>Zero Fillers, Zero Additives</strong> – No unnecessary ingredients, just pure creatine monohydrate.</li>
+    </ul>
+  </div>
+</section>
+
+
 
     </div>
   );

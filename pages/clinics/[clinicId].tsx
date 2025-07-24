@@ -177,6 +177,9 @@ const ClinicDetailPage = () => {
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec est vel nisi tincidunt
               maximus quis sit amet arcu. Phasellus fringilla diam et dui hendrerit blandit.
             </p>
+            <div>
+              <button>add to cart</button>
+            </div>
           </div>
         </div>
         <p className={styles.serviceLabel}>Service</p>
