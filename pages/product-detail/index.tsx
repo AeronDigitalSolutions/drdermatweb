@@ -8,6 +8,9 @@ import product2 from "@/public/womens_health.jpg";
 import product3 from "@/public/product2.jpg";
 import product4 from "@/public/product3.jpg";
 import Image from 'next/image';
+import MobileNavbar from "@/components/Layout/MobileNavbar";
+import Topbar from "@/components/Layout/Topbar";
+import Footer from "@/components/Layout/Footer";
 
 
 const imageList = [
@@ -23,6 +26,8 @@ export default function ProductDetail() {
   const [unit, setUnit] = useState<'KG' | 'LB'>('KG');
 
   return (
+    <>
+    <Topbar/>
     <div className={styles.wrapper}>
       <div className={styles.topSection}>
         <div className={styles.leftColumn}>
@@ -199,10 +204,10 @@ export default function ProductDetail() {
     </ul>
   </div>
 </section>
-
-
-
     </div>
+        <MobileNavbar/>
+        <Footer/>
+    </>
   );
 }
 
