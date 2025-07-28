@@ -21,45 +21,41 @@ const ITEMS_PER_PAGE = 6;
 
 const FindClinicsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-
-  // Use clinics directly (no dynamic id/reviews/rating generation)
   const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedClinics = clinics.slice(startIdx, startIdx + ITEMS_PER_PAGE);
   const totalPages = Math.ceil(clinics.length / ITEMS_PER_PAGE);
 
   return (
     <>
-    <Topbar/>
-    <div className={styles.layout}>
-      {/* Sidebar */}
-      <aside className={styles.sidebar}>
-        <SideCategories categories={clinicCategories} />
-      </aside>
+      <Topbar />
+      <div className={styles.layout}>
+        {/* Sidebar */}
+        <aside className={styles.sidebar}>
+          <SideCategories categories={clinicCategories} />
+        </aside>
 
-      {/* Main content */}
-      <main className={styles.main}>
-        <h2 className={styles.title}>Find Clinics</h2>
+        {/* Main content */}
+        <main className={styles.main}>
+          <h2 className={styles.title}>Find Clinics</h2>
 
-        {paginatedClinics.map(clinic => (
-          <ClinicCard key={clinic.id} clinic={clinic} />
-        ))}
-
-        <div className={styles.pagination}>
-          {Array.from({ length: totalPages }, (_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCurrentPage(idx + 1)}
-              className={`${styles.pageButton} ${
-                currentPage === idx + 1 ? styles.active : ''
-              }`}
-            >
-              {idx + 1}
-            </button>
+          {paginatedClinics.map(clinic => (
+            <ClinicCard key={clinic.id} clinic={clinic} />
           ))}
-        </div>
-      </main>
-    </div>
-    <Footer/>
+
+          <div className={styles.pagination}>
+            {Array.from({ length: totalPages }, (_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentPage(idx + 1)}
+                className={`${styles.pageButton} ${currentPage === idx + 1 ? styles.active : ''}`}
+              >
+                {idx + 1}
+              </button>
+            ))}
+          </div>
+        </main>
+      </div>
+      <Footer />
     </>
   );
 };

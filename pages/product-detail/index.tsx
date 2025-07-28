@@ -4,13 +4,20 @@ import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { FaStar, FaRegHeart } from 'react-icons/fa';
 import { FiShare2 } from 'react-icons/fi';
 import product1 from "@/public/demo-clinic.jpg";
+import product2 from "@/public/womens_health.jpg";
+import product3 from "@/public/product2.jpg";
+import product4 from "@/public/product3.jpg";
 import Image from 'next/image';
+import MobileNavbar from "@/components/Layout/MobileNavbar";
+import Topbar from "@/components/Layout/Topbar";
+import Footer from "@/components/Layout/Footer";
+
 
 const imageList = [
   product1,
-  product1,
-  product1,
-  product1,
+  product2,
+  product3,
+  product4,
 ];
 
 export default function ProductDetail() {
@@ -19,6 +26,8 @@ export default function ProductDetail() {
   const [unit, setUnit] = useState<'KG' | 'LB'>('KG');
 
   return (
+    <>
+    <Topbar/>
     <div className={styles.wrapper}>
       <div className={styles.topSection}>
         <div className={styles.leftColumn}>
@@ -58,12 +67,13 @@ export default function ProductDetail() {
             <p className={styles.mrp}>MRP: <span>₹6,599</span></p>
             <p className={styles.price}>Price: <span>₹5,399</span> <span className={styles.discount}>18% off</span></p>
             <p className={styles.tax}>Inclusive of all taxes</p>
+            <p className={styles.delivery}>Delivery by 10:00 PM today</p>
             <div className={styles.memberPrice}>₹5,129 for Premium Member</div>
           </div>
 
           <div className={styles.paymentInfo}>
             <p>3 interest free payments of ₹1799.68 with <span className={styles.simpl}>Simpl</span></p>
-            <p className={styles.cashback}>Get Rs 300 Cashback (New Users) or Rs 150 cashback (Repeat users) on orders above Rs 2,599 via Simpl pay-in-3</p>
+            <p >Get Rs 300 Cashback (New Users) or Rs 150 cashback (Repeat users)<br/> on orders above Rs 2,599 via Simpl pay-in-3</p>
           </div>
 
           <div className={styles.actions}>
@@ -76,48 +86,15 @@ export default function ProductDetail() {
             <button className={styles.buyNow}>Buy Now</button>
           </div>
 
-          <div className={styles.weightSwitch}>
-            <p>Weight</p>
-            <button onClick={() => setUnit('KG')} className={unit === 'KG' ? styles.activeUnit : ''}>KG</button>
-            <button onClick={() => setUnit('LB')} className={unit === 'LB' ? styles.activeUnit : ''}>LB</button>
-          </div>
+          
         </div>
       </div>
+
+
+
 
       {/* Additional Details Section Below */}
-      <div className={styles.detailsSection}>
-        <h2 className={styles.sectionHeading}>Product Details</h2>
-        <div className={styles.detailsGrid}>
-          <div>
-            <p className={styles.detailLabel}>Delivery Location</p>
-            <p>Delhi - 110001</p>
-          </div>
-          <div>
-            <p className={styles.detailLabel}>Best Before</p>
-            <p>Jul 2026</p>
-          </div>
-          <div>
-            <p className={styles.detailLabel}>Offers</p>
-            <ul>
-              <li>Get Extra 18% off</li>
-              <li>Rs 300 Cashback via Simpl</li>
-            </ul>
-          </div>
-          <div>
-            <p className={styles.detailLabel}>Return Policy</p>
-            <p>7 Days Return</p>
-          </div>
-          <div>
-            <p className={styles.detailLabel}>Shelf Life</p>
-            <p>24 Months</p>
-          </div>
-          <div>
-            <p className={styles.detailLabel}>Sold By</p>
-            <p>HealthKart Wellness Solutions</p>
-          </div>
-        </div>
-      </div>
-
+     
 <section className={styles.detailsSection}>
       <h2 className={styles.title}>Product Details of MuscleBlaze Micronised Creatine Monohydrate, 100 g</h2>
       <div className={styles.contentWrapper}>
@@ -149,6 +126,88 @@ export default function ProductDetail() {
       </div>
     </section>
 
+{/* Existing content remains unchanged... */}
+
+{/* Screenshot-Based Section - Added Below */}
+<section className={styles.creatineInfoSection}>
+  <h2 className={styles.creatineTitle}>Product Information of MuscleBlaze Micronised Creatine Monohydrate, 100 g</h2>
+  <p className={styles.subTitle}>Supplement Info</p>
+
+  <div className={styles.creatineWrapper}>
+    <div className={styles.infoLeft}>
+      <h4 className={styles.infoHeading}>Additional Information</h4>
+      <ul>
+        <li><strong>Country of Origin:</strong> India</li>
+        <li><strong>Flavour:</strong> Unflavoured</li>
+        <li><strong>Brand Origin:</strong> Indian</li>
+        <li><strong>Form:</strong> Powder</li>
+        <li><strong>Goal:</strong> Increases Stamina, Muscle Building</li>
+      </ul>
+
+      <h4 className={styles.infoHeading}>General Traits</h4>
+      <ul>
+        <li><strong>Weight:</strong> 100 g</li>
+        <li><strong>Number of Servings:</strong> 33</li>
+        <li><strong>Serving Size:</strong> 3 g</li>
+        <li><strong>Vegetarian/Non-Vegetarian:</strong> Vegetarian</li>
+      </ul>
+
+      <h4 className={styles.infoHeading}>Other Traits</h4>
+      <ul>
+        <li><strong>Product Code/UPC:</strong> 8906165788642</li>
+        <li><strong>Flavour Base:</strong> Others</li>
+      </ul>
     </div>
+
+    <div className={styles.infoRight}>
+      <div className={styles.imageBlock}>
+        <p className={styles.creatineLabel}>Creatine Monohydrate.</p>
+        <p className={styles.creatineSubLabel}>CONTAINS NO DOPING INGREDIENTS (As per WADA/NADA list)</p>
+        <p className={styles.creatineCompany}>Bright Lifecare Pvt. Ltd., CPCB REGN. No. <br />BO-23-000-08-AAECB5311J-23</p>
+        <div className={styles.fssai}>
+          <p>Lic. No. <strong>10015064000576</strong></p>
+        </div>
+        <div className={styles.iconRow}>
+          <div className={styles.trashIcon}></div>
+          <div className={styles.recycleIcon}></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* MuscleBlaze Creatine Information Section */}
+<section className={styles.creatineSection}>
+  <h2 className={styles.creatineHeading}>
+    Other Information of MuscleBlaze Micronised Creatine Monohydrate, 100 g
+  </h2>
+  <p className={styles.creatineSubtext}>
+    MuscleBlaze® Micronised Creatine Monohydrate is designed for those who refuse to settle for average. 
+    With 3g of ultra-pure, fast-absorbing creatine monohydrate per serving, it fuels your muscles with continuous energy, 
+    helping you train harder, lift heavier, and perform longer.
+  </p>
+  <p className={styles.creatineSubtext}>
+    This unflavoured creatine powder blends seamlessly into water, protein shakes, or fruit juice without any grittiness or bloating. 
+    Micronised for superior mixability, it ensures better absorption for maximum performance and minimal waste. 
+    Whether you’re an athlete, bodybuilder, or fitness enthusiast, this formula is built to support muscle strength, endurance, 
+    and overall workout efficiency.
+  </p>
+
+  <div className={styles.benefitsSection}>
+    <h3 className={styles.benefitsHeading}>Product Benefits</h3>
+    <ul className={styles.benefitList}>
+      <li><strong>Increases Strength & Power</strong> – Helps push beyond limits for peak performance.</li>
+      <li><strong>Supports Muscle Growth</strong> – Ideal for those looking to build lean mass.</li>
+      <li><strong>Enhances Stamina & Endurance</strong> – Delays fatigue for prolonged training sessions.</li>
+      <li><strong>Faster Recovery</strong> – Reduces muscle soreness post-workout, ensuring quicker recovery.</li>
+      <li><strong>Zero Fillers, Zero Additives</strong> – No unnecessary ingredients, just pure creatine monohydrate.</li>
+    </ul>
+  </div>
+</section>
+    </div>
+        <MobileNavbar/>
+        <Footer/>
+    </>
   );
 }
+

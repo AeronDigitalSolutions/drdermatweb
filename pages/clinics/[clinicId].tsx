@@ -8,16 +8,7 @@ import Footer from '@/components/Layout/Footer';
 import Ratings from '@/components/Layout/Reviews';
 import reviews from "@/data/reviews"; // Import reviews data
 import Topbar from '@/components/Layout/Topbar';
-
-
-const icons = [
-    { label: 'Dye Free', img: '/icons/dye-free.png' },
-    { label: 'Mineral Oil Free', img: '/icons/mineral-free.png' },
-    { label: 'Paraben Free', img: '/icons/paraben-free.png' },
-    { label: 'Sulfate Free', img: '/icons/sulfate-free.png' },
-  ];
-
-
+import { FaShoppingCart } from 'react-icons/fa';
 const ClinicDetailPage = () => {
   const router = useRouter();
   const { clinicId } = router.query;
@@ -80,47 +71,47 @@ const ClinicDetailPage = () => {
 
 
     {activeTab === 'Details' && 
-          (<section>
-            <div className={styles.detailsContainer}>
-              <div className={styles.codShipping}>
-                <div>
-                  <img src="/icons/cod.png" alt="COD" />
-                  <p><strong>COD Available</strong><br />@ ₹19 per Order</p>
-                </div>
-                <div>
-                  <img src="/icons/shipping.png" alt="Shipping" />
-                  <p><strong>Free Shipping</strong><br />Above ₹399</p>
-                </div>
-              </div>
+          (
 
-              <div className={styles.contactSection}>
-                <p>Have Queries or Concerns? Contact Us</p>
-                <button className={styles.contactButton}>Contact Us</button>
-              </div>
+                <section className={styles.container}>
+      <h2 className={styles.heading}>
+        Green Vally Clinic in Uran, Navi Mumbai
+      </h2>
+      <p className={styles.paragraph}>
+        Green Vally Clinic, a dedicated hospital in Children Hospitals located in Uran, Navi Mumbai,
+        offers high-quality healthcare services to patients of all ages. The hospital operates from 
+        <strong> Monday:- 12:00 am - 11:59 pm, Tuesday:- Open 24 Hrs, Wednesday:- Open 24 Hrs, Thursday:- Open 24 Hrs, Friday:- Open 24 Hrs, Saturday:- Open 24 Hrs, Sunday:- Open 24 Hrs.</strong>
+      </p>
 
-              <div className={styles.features}>
-                {icons.map((item, idx) => (
-                  <div key={idx} className={styles.featureItem}>
-                    <img src={item.img} alt={item.label} />
-                    <p>{item.label}</p>
-                  </div>
-                ))}
-              </div>
+      <h3 className={styles.subheading}>History and Commitment</h3>
+      <p className={styles.paragraph}>
+        Green Vally Clinic has been a pillar in the Children Hospitals sector for many years. Established in 2008, the hospital caters to a wide range of medical needs.
+      </p>
 
-              <div className={styles.paymentSection}>
-                <p>Pay Using</p>
-                <img src="/icons/payment-methods.png" alt="Payments" />
-                <div className={styles.securePayment}>
-                  <img src="/icons/secure-payment.png" alt="Secure Payment" />
-                  <p>100% Secure Payment</p>
-                </div>
-              </div>
+      <h3 className={styles.subheading}>Location</h3>
+      <p className={styles.paragraph}>
+        Green Vally Clinic is located in Uran, Navi Mumbai, making it easily accessible to patients from neighbouring cities and towns.
+      </p>
 
-              <div className={styles.socials}>
-                <img src="/icons/socials.png" alt="Social Icons" />
-              </div>
-            </div>
-          </section>
+      <h3 className={styles.subheading}>Services Offered</h3>
+      <p className={styles.paragraph}>
+        At Green Vally Clinic, patients can expect to receive top-notch treatments and surgeries. The hospital offers a range of services, including:
+      </p>
+      <ul className={styles.list}>
+        <li>
+          <strong>Treatments:</strong> Patients can expect to receive top-notch treatment for various medical conditions, including Viral Fever. The hospital's team of professionals is highly skilled and well-versed in their respective domains.
+        </li>
+        <li>
+          <strong>Services:</strong> Green Vally Clinic provides comprehensive services to support patient health and well-being, including Neonatal Intensive Care Unit (NICU). These services ensure a full spectrum of care for patients.
+        </li>
+      </ul>
+
+      <h3 className={styles.subheading}>Team</h3>
+      <p className={styles.paragraph}>
+        Green Vally Clinic has a team of esteemed doctors who are dedicated to prioritizing patient comfort. The hospital strives to create a relaxing and welcoming environment for everyone who walks through its doors.
+      </p>
+    </section>
+
         )}
           
       
@@ -163,6 +154,7 @@ const ClinicDetailPage = () => {
     
   
         {activeTab === 'Services' && (
+          <section>
   <div className={styles.servicesTabContainer}>
     {[1, 2, 3].map((_, index) => (
       <div key={index} className={styles.serviceCard}>
@@ -177,12 +169,20 @@ const ClinicDetailPage = () => {
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec est vel nisi tincidunt
               maximus quis sit amet arcu. Phasellus fringilla diam et dui hendrerit blandit.
             </p>
+            <div>
+            </div>
           </div>
-        </div>
-        <p className={styles.serviceLabel}>Service</p>
+        </div>           
+<button className={styles.addToCart}>
+      <FaShoppingCart className={styles.icon} />
+      Add to Cart
+    </button>
       </div>
+      
     ))}
   </div>
+  
+</section>
 )}
 
     </div>
