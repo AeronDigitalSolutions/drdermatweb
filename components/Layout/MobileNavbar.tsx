@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaHome, FaUserMd, FaUser } from "react-icons/fa";
 import { MdFolder, MdOutlineAssignment } from "react-icons/md";
 import styles from "@/styles/mobileNavbar.module.css";
+import Link from "next/link";
 
 const MobileNavbar = () => {
   const [showDrawer, setShowDrawer] = useState(false);
@@ -15,13 +16,19 @@ const MobileNavbar = () => {
       <div className={styles.navbar}>
         <div className={styles.navItem}>
           <FaHome className={styles.icon} />
-          <span>Home</span>
+          <span> <Link href='/home'>Home</Link></span>
         </div>
         <div className={styles.navItem}>
           <MdOutlineAssignment className={styles.icon} />
-          <span>Book <br />Appointment</span>
+          <span>
+           <Link href='/home/findClinicsPage'> Book <br /></Link>
+            Appointment
+          </span>
         </div>
-        <div className={`${styles.navItem} ${styles.centerItem}`} onClick={toggleDrawer}>
+        <div
+          className={`${styles.navItem} ${styles.centerItem}`}
+          onClick={toggleDrawer}
+        >
           <MdFolder className={styles.icon} />
           <span>Your Result</span>
         </div>
@@ -41,12 +48,34 @@ const MobileNavbar = () => {
           <div className={styles.drawerContent}>
             <h4>Your Links</h4>
             <ul>
-              <li><a href="#">Lab Results</a></li>
-              <li><a href="#">Scan Reports</a></li>
-              <li><a href="#">Prescription History</a></li>
-              <li><a href="#">Medical Summary</a></li>
+              <li>
+                <a href="#">Your Orders</a>
+              </li>
+              <li>
+                <a href="#">Online Consultations</a>
+              </li>
+              <li>
+                <a href="#">Online Test Report</a>
+              </li>
+              <li>
+                <a href="#">Your Gallery</a>
+              </li>
+              <li>
+                <a href="#">Upload a Prescription</a>
+              </li>
+              <li>
+                <a href="#">Recommended Products for you</a>
+              </li>
+              <li>
+                <a href="#">Recommended Treatment Plans for you</a>
+              </li>
+              <li>
+                <a href="#">Avail Special Offers & Discount</a>
+              </li>
             </ul>
-            <button className={styles.closeBtn} onClick={toggleDrawer}>Close</button>
+            <button className={styles.closeBtn} onClick={toggleDrawer}>
+              Close
+            </button>
           </div>
         </div>
       )}

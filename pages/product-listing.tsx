@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import styles from "@/styles/pages/ProductListingPage.module.css";
+import styles from "@/styles/ProductList.module.css";
 import productImg from "@/public/product1.png";
 import { StaticImageData } from "next/image";
 import Image from "next/image";
