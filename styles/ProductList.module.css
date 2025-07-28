@@ -330,8 +330,8 @@
   .productGrid {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0px;
-    padding: 10px 0px;
+    gap: 12px;
+    padding: 10px 8px;
     justify-items: center;
   }
 
@@ -413,11 +413,9 @@
     display: grid !important;
     grid-template-columns: repeat(2, 1fr);
     gap: 0px;
-    padding: 10px 8px;
+    padding: 10px 0px;
     justify-items: center;
-    margin-right: 0 !important;   /* ✅ Fix overflow */
-    width: 80%;                  /* ✅ Prevent expansion */
-    box-sizing: border-box;       /* ✅ Prevent box model overflow */
+margin-right: 4rem;
   }
 
   .productCard {
@@ -437,6 +435,7 @@
   .productButton {
     font-size: 13px;
     padding: 7px;
+    margin: 0;
   }
 
   .productDiscount {
