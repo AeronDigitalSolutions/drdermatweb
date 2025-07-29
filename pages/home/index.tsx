@@ -15,6 +15,7 @@ import {productsCardListData} from "@/data/productsCardListData";
 import Offer from "./Offer";
 import Treatment from "./Treatment";
 import HappyStories from "./HappyStories";
+import Link from "next/link";
 
 
 const index = () => {
@@ -50,9 +51,9 @@ const index = () => {
       {/* featured section */}
       <h1 style={{ textAlign: "center", marginBottom: "0px" , textDecoration:"underline"}}>Top Products</h1>
 
-      <ProductCard products={productsCardListData.slice(0,12)}/>
+      <ProductCard products={productsCardListData.slice(0,8)}/>
 
-
+      <Link href="/product-listing"><h3 style={{ textAlign: "center", marginBottom: "40px" , textDecoration:"underline"}}>Show More</h3></Link>
        <div style={{
         padding: "0px 20px",
         backgroundColor: "#ffffff", // Optional: to visually separate from above
