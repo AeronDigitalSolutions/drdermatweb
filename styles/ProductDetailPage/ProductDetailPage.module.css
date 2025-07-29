@@ -483,105 +483,154 @@ margin: 1rem 11rem;
   line-height: 1.6;
 }
 
-/* === Mobile Styles (Up to 480px) === */
+
+
+/* ==== Desktop Styles (unchanged) ==== */
+.wrapper {
+  margin: 1rem 11rem;
+  font-family: 'Inter', sans-serif;
+  background-color: #fff;
+}
+
+/* ... rest of your desktop styles ... remain unchanged ... */
+
+/* ==== Mobile Responsive Styles for 480px & below ==== */
 @media (max-width: 480px) {
-  .layoutWrapper {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    gap: 12px;
+  .wrapper {
+    margin: 1rem;
   }
 
-  .sidebar {
-    display: flex !important;
-    flex-direction: row !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    white-space: nowrap !important;
-    padding: 10px 8px !important;
-    background: transparent;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    gap: 12px;
-    width: 100%;
-  }
-
-  .sidebar::-webkit-scrollbar {
-    height: 6px;
-  }
-
-  .sidebar::-webkit-scrollbar-thumb {
-    background-color: #aaa;
-    border-radius: 3px;
-  }
-
-  .sidebarTitle {
-    display: none !important;
-  }
-
-  .sidebarCard {
-    flex: 0 0 auto !important;
-    min-width: 110px !important;
-    max-width: 120px !important;
-    background-color: white;
-    padding: 8px;
-    border-radius: 6px;
-    scroll-snap-align: start;
-    text-align: center;
-  }
-
-  .productGrid {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    padding: 10px 8px;
-    justify-items: center;
-  }
-
-  .productCard {
-    height: 320px;
-  }
-
-  .productImageWrapper {
-    display: flex;
+  .topSection {
     flex-direction: column;
     align-items: center;
   }
 
-  /* ✅ Show only main image */
-  .productImageWrapper img:first-child {
-    display: block !important;
+  .leftColumn {
+    flex-direction: column;
+    align-items: center;
   }
 
-  .productImageWrapper img:nth-child(n+2) {
-    display: none !important;
+  .thumbnailList {
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    display: none; /* ✅ Hide thumbnails on mobile */
   }
 
-  .productImage {
-    width: 130px;
-    height: 130px;
+  .mainImageWrapper {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+  }
+
+  .mainImage {
+    width: 100%;
+    height: auto;
     object-fit: contain;
   }
 
-  .productName {
-    font-size: 1rem;
-    margin-top: 20px;
-    text-align: center;
+  .rightColumn {
+    width: 100%;
+    padding: 0 1rem;
   }
 
-  .productButton {
-    font-size: 14px;
-    padding: 8px;
+  .title {
+    font-size: 18px;
   }
 
-  .productDiscount {
-    font-size: 12px;
-    margin-left: 20px;
+  .memberPrice {
+    width: 100%;
   }
 
-  .shopSection {
-    padding: 0px;
+  .actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .addToCart,
+  .buyNow {
+    width: 100%;
+  }
+
+  .detailsSection {
+    padding: 1rem;
+  }
+
+  .contentWrapper {
+    flex-direction: column;
+  }
+
+  .leftBox,
+  .rightBox {
+    padding: 1rem;
+    border-left: none;
+  }
+
+  .creatineInfoSection {
+    padding: 1rem;
+  }
+
+  .creatineWrapper {
+    flex-direction: column;
+  }
+
+  .infoLeft,
+  .infoRight {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .imageBlock {
+    padding: 1.5rem;
+  }
+
+  .benefitList {
+    padding-left: 1rem;
   }
 }
 
+/* ==== Additional Mobile Optimization for 370px & below ==== */
+@media (max-width: 370px) {
+  .mainImageWrapper {
+    max-width: 260px;
+  }
 
+  .mainImage {
+    border-radius: 6px;
+  }
+
+  .addToCart,
+  .buyNow {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .memberPrice {
+    font-size: 13px;
+  }
+
+  .quantity button,
+  .quantity span {
+    padding: 6px;
+    font-size: 13px;
+  }
+
+  .rightBox p,
+  .bulletList li {
+    font-size: 13px;
+  }
+
+  .creatineTitle {
+    font-size: 18px;
+  }
+
+  .benefitsHeading {
+    font-size: 16px;
+  }
+}

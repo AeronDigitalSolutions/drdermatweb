@@ -47,7 +47,7 @@
   background-color: #fff;
   padding: 15px;
   border-radius: 10px;
-  transition: transform 0.3s, box-shadow 0.3s;
+  /* transition: transform 0.3s, box-shadow 0.3s; */
   display: flex;
   flex-direction: column;
   height: 382px;
@@ -55,7 +55,7 @@
 }
 
 .productCard:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  /* box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); */
 }
 
 /* Bestseller Badge */
@@ -412,8 +412,8 @@
   .productGrid {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr);
-    gap: 0px;
-    padding: 10px 8px;
+    gap: 6px;
+    padding: 10px 43px;
     justify-items: center;
     margin-right: 0 !important;   /* ✅ Fix overflow */
     width: 80%;                  /* ✅ Prevent expansion */

@@ -107,7 +107,7 @@ const ProductListingPage: React.FC = () => {
                 <div
                   key={product.id}
                   className={styles.productCard}
-                  onClick={() => router.push(`/product/${product.id}`)}
+                  onClick={() => router.push(`/product-detail`)}
                 >
                   <div className={styles.productItem}>
                     {product.isBestseller && (

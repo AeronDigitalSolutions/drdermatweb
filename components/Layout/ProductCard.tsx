@@ -22,7 +22,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ products }) => {
           <div
             key={index}
             className={styles.productCard}
-            onClick={() => router.push(`/product/${product.id}`)}
+            onClick={() => router.push('/product-detail')}
           >
             <div className={styles.productItem}>
               {product.isBestseller && (
