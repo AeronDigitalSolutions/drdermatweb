@@ -63,6 +63,7 @@
   object-fit: cover;
   display: block;
   margin-left: 30px;
+  margin-top: 20px;
 }
 
 .categoryText {
@@ -142,6 +143,7 @@
     grid-template-columns: repeat(3, 1fr); /* More suitable for very small screens */
     padding: 8px 45px;
     gap: 5px;
+    width: 28%;
     margin-bottom: 3rem;
   }
 
@@ -156,6 +158,8 @@
     height: 65%;
     margin-left: auto;
     margin-right: auto;
+    
+
   }
 
   .categoryText {

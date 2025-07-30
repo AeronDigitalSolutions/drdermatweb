@@ -1,45 +1,117 @@
 import React, { useEffect, useRef, useState } from "react";
-import styles from "@/styles/HappyStories.module.css";
+import styles from "@/styles/Treatment.module.css";
 
 const YOUTUBE_REELS = [
-  "https://www.youtube.com/embed/LjpGh3jfLn4?autoplay=1&mute=1&controls=0&loop=1&playlist=LjpGh3jfLn4",
-  "https://www.youtube.com/embed/LjpGh3jfLn4?autoplay=1&mute=1&controls=0&loop=1&playlist=LjpGh3jfLn4",
-  "https://www.youtube.com/embed/LjpGh3jfLn4?autoplay=1&mute=1&controls=0&loop=1&playlist=LjpGh3jfLn4",
-  "https://www.youtube.com/embed/LjpGh3jfLn4?autoplay=1&mute=1&controls=0&loop=1&playlist=LjpGh3jfLn4",
-  "https://www.youtube.com/embed/LjpGh3jfLn4?autoplay=1&mute=1&controls=0&loop=1&playlist=LjpGh3jfLn4",
-  "https://www.youtube.com/embed/LjpGh3jfLn4?autoplay=1&mute=1&controls=0&loop=1&playlist=LjpGh3jfLn4",
+  "LjpGh3jfLn4",
+  "LjpGh3jfLn4",
+  "LjpGh3jfLn4",
+  "LjpGh3jfLn4",
+  "LjpGh3jfLn4",
+  "LjpGh3jfLn4",
 ];
+
+declare global {
+  interface Window {
+    YT: any;
+    onYouTubeIframeAPIReady: () => void;
+  }
+}
 
 const Treatment = () => {
   const [current, setCurrent] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isApiReady, setIsApiReady] = useState(false);
+  const [mutedStates, setMutedStates] = useState(YOUTUBE_REELS.map(() => true));
+
+  const playerInstances = useRef<any[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Load YouTube iframe API
   useEffect(() => {
-    if (isHovered) return; // pause autoplay when hovering
+    if (!window.YT) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.body.appendChild(tag);
+    }
+
+    window.onYouTubeIframeAPIReady = () => {
+      setIsApiReady(true);
+    };
+
+    if (window.YT && window.YT.Player) {
+      setIsApiReady(true);
+    }
+  }, []);
+
+  // Initialize players when API is ready
+  useEffect(() => {
+    if (!isApiReady) return;
+
+    YOUTUBE_REELS.forEach((videoId, index) => {
+      const player = new window.YT.Player(`player-${index}`, {
+        height: "100%",
+        width: "100%",
+        videoId,
+        playerVars: {
+          autoplay: 1,
+          mute: 1,
+          controls: 0,
+          loop: 1,
+          playlist: videoId,
+          modestbranding: 1,
+          fs: 0,
+          disablekb: 1,
+          rel: 0,
+        },
+        events: {
+          onReady: (event: any) => {
+            event.target.mute();
+            event.target.playVideo();
+          },
+        },
+      });
+      playerInstances.current[index] = player;
+    });
+  }, [isApiReady]);
+
+  // Autoplay scroll logic
+  useEffect(() => {
+    if (isHovered) return;
 
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % YOUTUBE_REELS.length);
-    }, 3000); // autoplay every 3 seconds
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [isHovered]);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const scrollLeft = e.currentTarget.scrollLeft;
-    const cardWidth = e.currentTarget.offsetWidth * 0.8; // card = 80% width
+    const cardWidth = e.currentTarget.offsetWidth * 0.8;
     const index = Math.round(scrollLeft / cardWidth);
     setCurrent(index % YOUTUBE_REELS.length);
   };
 
+  const toggleMute = (index: number) => {
+    const player = playerInstances.current[index];
+    if (!player) return;
+
+    const isMuted = mutedStates[index];
+    if (isMuted) {
+      player.unMute();
+    } else {
+      player.mute();
+    }
+
+    const newStates = [...mutedStates];
+    newStates[index] = !isMuted;
+    setMutedStates(newStates);
+  };
+
   return (
     <div className={styles.wrapper}>
-      <div
-        className={styles.slider}
-        ref={containerRef}
-        onScroll={handleScroll}
-      >
-        {YOUTUBE_REELS.map((url, index) => (
+      <div className={styles.slider} ref={containerRef} onScroll={handleScroll}>
+        {YOUTUBE_REELS.map((videoId, index) => (
           <div
             className={`${styles.card} ${
               index === current ? styles.active : styles.inactive
@@ -51,13 +123,15 @@ const Treatment = () => {
             }}
             onMouseLeave={() => setIsHovered(false)}
           >
-            <iframe
-              src={url}
-              frameBorder="0"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-              title={`Reel ${index}`}
-            />
+            <div className={styles.videoWrapper}>
+              <div id={`player-${index}`} />
+              <button
+                className={styles.muteButton}
+                onClick={() => toggleMute(index)}
+              >
+                {mutedStates[index] ? "🔇" : "🔊"}
+              </button>
+            </div>
           </div>
         ))}
       </div>

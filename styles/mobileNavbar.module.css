@@ -3,7 +3,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 70px;
+  height: 60px;
   background-color: #fff;
   box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -18,7 +18,7 @@
   flex-direction: column;
   align-items: center;
   color: #374151;
-  font-size: 12px;
+  font-size: 10px;
   justify-items: center;
   font-weight: 500;
 }
@@ -29,41 +29,40 @@
 }
 
 .centerItem {
-background: white;
-    border-radius: 50%;
-    padding: 15px;
-    margin-top: -24px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-    width: 92px;
-    height: 80px;
+  background: white;
+  border-radius: 50%;
+  padding: 15px;
+  margin-top: -38px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  width: 83px;
+  height: 77px;
+  cursor: pointer;
 }
 
-.navItem span{
-text-align: center;
+.navItem span {
+  text-align: center;
 }
-/* Only show on tablets and mobile */
+
+/* Hide navbar on desktop */
 @media (min-width: 600px) {
   .navbar {
     display: none;
   }
 }
 
-
-/* Existing styles... */
-
 .drawer {
   position: fixed;
-  bottom: 70px; /* Just above navbar */
+  bottom: 60px;
   left: 0;
   right: 0;
-  height: 405px;
+  height: 265px;
   background-color: #f9f9f9;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
   z-index: 998;
   animation: slideUp 0.3s ease-in-out;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
-  padding: 16px;
+  padding: 14px;
   overflow-y: auto;
 }
 
@@ -79,7 +78,7 @@ text-align: center;
 .drawerContent {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0px;
 }
 
 .drawerContent h4 {
@@ -94,7 +93,7 @@ text-align: center;
 }
 
 .drawerContent li {
-  padding: 8px 0;
+  padding: 4px 0;
   border-bottom: 1px solid #ddd;
 }
 
@@ -102,16 +101,7 @@ text-align: center;
   color: #1f2937;
   text-decoration: none;
   font-weight: 500;
+  font-size: 12px;
 }
 
-.closeBtn {
-  margin-top: 12px;
-  padding: 8px 16px;
-  background: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  align-self: flex-start;
-  cursor: pointer;
-}
+/* Removed closeBtn styling since it's no longer used */
