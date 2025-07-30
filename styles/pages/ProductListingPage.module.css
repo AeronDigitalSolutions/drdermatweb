@@ -187,7 +187,6 @@
   cursor: pointer;
   text-align: center;
   margin: 10px auto;
-  box-shadow: 0px 10px 18px rgba(19, 87, 138, 0.4);
 }
 
 .productButton:hover {
@@ -416,13 +415,13 @@
     padding: 10px 43px;
     justify-items: center;
     margin-right: 0 !important;   /* ✅ Fix overflow */
-    width: 80%;                  /* ✅ Prevent expansion */
+    width: 79%;                  /* ✅ Prevent expansion */
     box-sizing: border-box;       /* ✅ Prevent box model overflow */
   }
 
   .productCard {
     height: 300px;
-  }
+  } 
 
   .productImage {
     width: 120px;
