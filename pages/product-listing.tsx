@@ -100,7 +100,19 @@ const ProductListingPage: React.FC = () => {
 
           {/* Product Grid */}
           <div style={{ width: "100%" }}>
+
+<div className={styles.headerRow}>
             <h1 className={styles.categoryHeading}>{selectedCategory}</h1>
+  <div className={styles.searchBar}>
+    <input
+      type="text"
+      placeholder="Search products..."
+      className={styles.searchInput}
+    />
+    <span className={styles.searchIcon}>🔍</span>
+  </div>
+</div>
+
 
             <div className={styles.productGrid}>
               {paginatedProducts.map((product) => (

@@ -112,8 +112,6 @@ const Products = () => {
   return (
     <UserLayout>
       <div className={styles.productListContainer}>
-        <h1 className={styles.pageTitle}>All Products</h1>
-
         <div className={styles.productGrid}>
           {productList.map((product, index) => {
             return (

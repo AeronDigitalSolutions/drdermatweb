@@ -36,7 +36,15 @@ const FindClinicsPage = () => {
 
         {/* Main content */}
         <main className={styles.main}>
-          <h2 className={styles.title}>Find Clinics</h2>
+         <div className={styles.headerRow}>
+  <h2 className={styles.title}>Find Clinics</h2>
+  <input
+    type="text"
+    placeholder="Search clinics..."
+    className={styles.searchBar}
+  />
+</div>
+ 
 
           {paginatedClinics.map(clinic => (
             <ClinicCard key={clinic.id} clinic={clinic} />
