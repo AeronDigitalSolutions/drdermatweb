@@ -11,6 +11,15 @@
   position: relative;
   font-family: "Arial", sans-serif;
 }
+.hideOnMobile {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .hideOnMobile {
+    display: none !important;
+  }
+}
 
 .logo {
   z-index: 101;

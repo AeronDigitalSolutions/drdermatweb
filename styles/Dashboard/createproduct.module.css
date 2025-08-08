@@ -29,10 +29,15 @@
 }
 
 .imageUpload {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  gap: 1rem;
+    display: flex
+;
+    align-items: center;
+    cursor: pointer;
+    gap: 1rem;
+    border: 1px solid #ccc;
+    padding: 10px 136px;
+    border-radius: 4px;
+  
 }
 
 .imageInput {

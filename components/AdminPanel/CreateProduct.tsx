@@ -22,8 +22,17 @@ const CreateProduct = () => {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImage(imageUrl);
+      if (file.size > 1024 * 1024) {
+        alert("Image size should not exceed 1MB.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setImage(base64String);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -38,9 +47,52 @@ const CreateProduct = () => {
     setFormData((prev) => ({ ...prev, description: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
+
+    if (!image) {
+      alert("Please upload an image.");
+      return;
+    }
+
+    const productData = {
+      ...formData,
+      quantity: Number(formData.quantity),
+      price: Number(formData.price),
+      discountPrice: Number(formData.discountPrice),
+      image, // Base64 image
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(productData),
+      });
+
+      if (!response.ok) throw new Error("Failed to create product");
+
+      const result = await response.json();
+      alert("✅ Product created successfully!");
+      console.log("Created product:", result);
+
+      // Reset form after success
+      setFormData({
+        category: "",
+        company: "",
+        name: "",
+        quantity: "",
+        price: "",
+        discountPrice: "",
+        description: "",
+      });
+      setImage(null);
+    } catch (error) {
+      console.error("Error creating product:", error);
+      alert("❌ Failed to create product. Check console for details.");
+    }
   };
 
   return (

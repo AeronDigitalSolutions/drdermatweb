@@ -1,3 +1,4 @@
+// Topbar.tsx
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "@/styles/components/Layout/Topbar.module.css";
@@ -6,7 +7,11 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ShoppingCart, MapPin, Menu } from "lucide-react";
 
-const Topbar: React.FC = () => {
+interface TopbarProps {
+  hideHamburgerOnMobile?: boolean;
+}
+
+const Topbar: React.FC<TopbarProps> = ({ hideHamburgerOnMobile }) => {
   const router = useRouter();
   const session = useSession();
 
@@ -43,13 +48,14 @@ const Topbar: React.FC = () => {
         height={45}
       />
 
-      <div className={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}>
+      <div
+        className={`${styles.hamburger} ${hideHamburgerOnMobile ? styles.hideOnMobile : ""}`}
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
         <Menu size={28} />
       </div>
 
-      <nav
-        className={`${styles.navLinks} ${menuOpen ? styles.open : ""}`}
-      >
+      <nav className={`${styles.navLinks} ${menuOpen ? styles.open : ""}`}>
         <Link href="/home">Home</Link>
         <Link href="/home/findClinicsPage">Book Appointment</Link>
         <Link href="/quiz/ques1">Your Result</Link>

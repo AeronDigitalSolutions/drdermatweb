@@ -1,27 +1,88 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styles from "@/styles/Dashboard/createcategory.module.css";
+import MobileNavbar from "../Layout/MobileNavbar";
 
 const CreateCategory = () => {
   const [categoryName, setCategoryName] = useState("");
   const [categoryImage, setCategoryImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [categoryType, setCategoryType] = useState("product");
+  const [categoryType, setCategoryType] = useState<"product" | "service">("product");
+  const [error, setError] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const convertToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+    });
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (file) {
+      if (file.size > 1024 * 1024) {
+        setError("Image must be less than or equal to 1MB.");
+        setCategoryImage(null);
+        setPreviewUrl(null);
+        return;
+      }
+
+      setError("");
       setCategoryImage(file);
       setPreviewUrl(URL.createObjectURL(file));
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Handle form submission logic
-    console.log("Category Name:", categoryName);
-    console.log("Category Type:", categoryType);
-    console.log("Category Image:", categoryImage);
+    if (!categoryName.trim()) {
+      setError("Category name is required.");
+      return;
+    }
+
+    if (!categoryImage) {
+      setError("Please select an image.");
+      return;
+    }
+
+    try {
+      const base64Image = await convertToBase64(categoryImage);
+
+      const response = await fetch("http://localhost:5000/api/categories", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: categoryName.trim(),
+          imageUrl: base64Image,
+          type: categoryType,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Failed to create category.");
+        return;
+      }
+
+      // Reset form
+      setCategoryName("");
+      setCategoryImage(null);
+      setPreviewUrl(null);
+      setCategoryType("product");
+      setError("");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      alert("✅ Category created successfully!");
+    } catch (err) {
+      console.error(err);
+      setError("An unexpected error occurred.");
+    }
   };
 
   return (
@@ -29,24 +90,29 @@ const CreateCategory = () => {
       <form className={styles.form} onSubmit={handleSubmit}>
         <h2 className={styles.title}>Add New Category</h2>
 
+        {error && <p className={styles.error}>{error}</p>}
+
         <label htmlFor="name">Category Name</label>
         <input
           type="text"
           id="name"
           value={categoryName}
           onChange={(e) => setCategoryName(e.target.value)}
-          required
           className={styles.input}
+          placeholder="Enter category name"
+          required
         />
 
-        <label htmlFor="image">Category Image</label>
+        <label htmlFor="image">Category Image (Max 1MB)</label>
         <input
+          ref={fileInputRef}
           type="file"
           id="image"
           accept="image/*"
           onChange={handleImageChange}
           className={styles.fileInput}
         />
+
         {previewUrl && (
           <img src={previewUrl} alt="Preview" className={styles.preview} />
         )}
@@ -57,7 +123,7 @@ const CreateCategory = () => {
               type="radio"
               value="product"
               checked={categoryType === "product"}
-              onChange={(e) => setCategoryType(e.target.value)}
+              onChange={() => setCategoryType("product")}
             />
             Product Category
           </label>
@@ -66,7 +132,7 @@ const CreateCategory = () => {
               type="radio"
               value="service"
               checked={categoryType === "service"}
-              onChange={(e) => setCategoryType(e.target.value)}
+              onChange={() => setCategoryType("service")}
             />
             Service Category
           </label>
@@ -76,6 +142,8 @@ const CreateCategory = () => {
           Add Category
         </button>
       </form>
+
+      <MobileNavbar />
     </div>
   );
 };
