@@ -3,7 +3,7 @@
   justify-content: center;
   background-color: #fdf3e3;
   padding: 4rem 1rem; /* Add top and bottom padding for spacing */
-  min-height: calc(100vh - 120px); /* Leave room for topbar and footer */
+height: 100vh;
   box-sizing: border-box;
 }
 

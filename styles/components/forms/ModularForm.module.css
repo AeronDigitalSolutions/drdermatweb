@@ -3,7 +3,7 @@
 .container {
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Align content to the top */
+  align-items: center; /* Align content to the top */
   min-height: 100vh;        /* Allow it to grow beyond viewport if needed */
   padding: 2rem 1rem;       /* Add padding so users can scroll into content */
   background-color: #fdf3e3;
@@ -17,7 +17,7 @@
   border-radius: 25px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 350px;
+  width: 400px;
 }
 
 .head {

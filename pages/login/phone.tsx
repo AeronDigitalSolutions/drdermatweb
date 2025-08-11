@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import ModularForm from "@/components/forms/ModularForm";
 import React, { useState } from "react";
 import Topbar from "@/components/Layout/Topbar";
+import Footer from "@/components/Layout/Footer";
 
 const PhoneLogin = () => {
   const [countryCode, setCountryCode] = useState("+91");
@@ -47,8 +48,9 @@ const PhoneLogin = () => {
         />
       </div>
 
-      
+      <Footer/>
     </div>
+
   );
 };
 

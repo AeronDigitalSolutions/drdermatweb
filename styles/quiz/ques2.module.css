@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   background-color: #fdf3e3;
-  padding: 4rem 1rem; /* Add top and bottom padding for spacing */
-  min-height: calc(100vh - 120px); /* Leave room for topbar and footer */
+  padding: 4rem 1rem; 
+  min-height: calc(100vh - 120px); 
   box-sizing: border-box;
 }
 
@@ -14,8 +14,8 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 450px;
-  margin-top: 2rem;   /* Optional: extra top margin */
-  margin-bottom: 2rem; /* Optional: extra bottom margin */
+  margin-top: 2rem;  
+  margin-bottom: 2rem; 
 }
 
 .heading {
@@ -56,7 +56,7 @@
 }
 
 .button {
-  margin: 2rem auto 0; /* top: 2rem, auto left & right to center, 0 bottom */
+  margin: 2rem auto 0; 
   padding: 10px 25px;
   background-color: #002d62;
   color: white;
@@ -65,7 +65,7 @@
   font-size: 1rem;
   cursor: pointer;
   width: 100px;
-  display: block; /* necessary for margin auto to work on button */
+  display: block; 
 }
 
 
@@ -105,8 +105,3 @@
 }
 
 
-
-/* .footer{
-  margin: 10%;
-  width: 100%;
-} */
