@@ -1,3 +1,5 @@
+// lib/api/clinics.ts
+
 export async function createNewClinic(
   name: string,
   latitude: string,
@@ -30,7 +32,7 @@ export async function createNewClinic(
     }
     return { message: data.message, success: true };
   } catch (error) {
-    return { message: data.message, success: true };
+    return { message: data.message, success: false };
   }
 }
 
@@ -71,4 +73,28 @@ export async function getClinicsListNearMe(
   }
 
   return { message: data.message, success: true, data: data.data };
+}
+
+// ✅ New function: getClinicById
+export async function getClinicById(
+  clinicId: string
+): Promise<{ success: boolean; message: string; data: any }> {
+  try {
+    const res = await fetch(`/api/v1/clinics/details/${clinicId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return { message: data.message, success: false, data: null };
+    }
+
+    return { message: data.message, success: true, data: data.data };
+  } catch (err: any) {
+    return { message: err.message, success: false, data: null };
+  }
 }

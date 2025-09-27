@@ -1,20 +1,45 @@
-import React, { useEffect, useRef, useState } from "react";
+"use client";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "@/styles/Offer.module.css";
-import offer1 from "@/public/card-1.png"
-import offer2 from "@/public/card-2.png"
-import offer3 from "@/public/card-3.png"
-import Image from "next/image";
-const slides = [offer1, offer2, offer3
-];
 
-const Offer = () => {
+interface Offer {
+  _id: string;
+  imageBase64: string;
+}
+
+const OfferComponent = () => {
+  const [slides, setSlides] = useState<Offer[]>([]);
   const [current, setCurrent] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const sliderRef = useRef<HTMLDivElement>(null);
+  const fetchIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Fetch offers from backend
+  const fetchOffers = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/offers");
+      const data: Offer[] = await res.json();
+      setSlides(data);
+    } catch (err) {
+      console.error("Failed to fetch offers", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchOffers();
+
+    // Poll backend every 3 seconds
+    fetchIntervalRef.current = setInterval(fetchOffers, 3000);
+
+    return () => {
+      if (fetchIntervalRef.current) clearInterval(fetchIntervalRef.current);
+    };
+  }, []);
+
+  // Auto scroll slider
   const startAutoScroll = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
+      setCurrent((prev) => (slides.length ? (prev + 1) % slides.length : 0));
     }, 2000);
   };
 
@@ -23,14 +48,15 @@ const Offer = () => {
   };
 
   useEffect(() => {
-    startAutoScroll();
+    if (slides.length > 0) startAutoScroll();
     return () => stopAutoScroll();
-  }, []);
+  }, [slides]);
+
+  if (slides.length === 0) return <p style={{ textAlign: "center", padding: 20 }}>No offers available</p>;
 
   return (
     <div
       className={styles.sliderWrapper}
-      ref={sliderRef}
       onMouseEnter={stopAutoScroll}
       onMouseLeave={startAutoScroll}
     >
@@ -38,19 +64,17 @@ const Offer = () => {
         className={styles.slider}
         style={{ transform: `translateX(-${current * 100}%)` }}
       >
-        {slides.map((src, index) => (
-          <div className={styles.slide} key={index}>
-            <Image
-  src={src}
-  alt={`Offer ${index}`}
-  fill
-  objectFit="cover"
-  sizes="(max-width: 768px) 90vw, 80vw"
-/>
-
+        {slides.map((slide) => (
+          <div className={styles.slide} key={slide._id}>
+            <img
+              src={slide.imageBase64}
+              alt="Offer"
+              style={{ width: "100%", height: "200px", objectFit: "cover" }}
+            />
           </div>
         ))}
       </div>
+
       <div className={styles.dots}>
         {slides.map((_, idx) => (
           <span
@@ -64,4 +88,4 @@ const Offer = () => {
   );
 };
 
-export default Offer;
+export default OfferComponent;

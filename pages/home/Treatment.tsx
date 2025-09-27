@@ -1,135 +1,216 @@
+"use client";
 import React, { useEffect, useRef, useState } from "react";
-import styles from "@/styles/Treatment.module.css";
+import axios from "axios";
+import styles from "@/styles/HappyStories.module.css";
 
-const YOUTUBE_REELS = [
-  "LjpGh3jfLn4",
-  "LjpGh3jfLn4",
-  "LjpGh3jfLn4",
-  "LjpGh3jfLn4",
-  "LjpGh3jfLn4",
-  "LjpGh3jfLn4",
-];
+interface Short {
+  _id: string;
+  platform: "youtube" | "instagram";
+  videoUrl: string; // YouTube Shorts URL or Instagram .mp4
+}
 
 declare global {
   interface Window {
     YT: any;
-    onYouTubeIframeAPIReady: () => void;
+    onYouTubeIframeAPIReady: any;
   }
 }
 
-const Treatment = () => {
+const TreatmentStories = () => {
+  const [shorts, setShorts] = useState<Short[]>([]);
   const [current, setCurrent] = useState(0);
+  const [isMuted, setIsMuted] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
-  const [isApiReady, setIsApiReady] = useState(false);
-  const [mutedStates, setMutedStates] = useState(YOUTUBE_REELS.map(() => true));
 
-  const playerInstances = useRef<any[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const playersRef = useRef<any[]>([]);
+  const ytReadyRef = useRef<boolean>(false);
 
-  // Load YouTube iframe API
+  // ✅ Load YouTube API safely
   useEffect(() => {
-    if (!window.YT) {
+    if (!(window as any).YT) {
       const tag = document.createElement("script");
       tag.src = "https://www.youtube.com/iframe_api";
       document.body.appendChild(tag);
+    } else {
+      ytReadyRef.current = true;
     }
 
-    window.onYouTubeIframeAPIReady = () => {
-      setIsApiReady(true);
+    (window as any).onYouTubeIframeAPIReady = () => {
+      ytReadyRef.current = true;
+      initYouTubePlayers();
     };
-
-    if (window.YT && window.YT.Player) {
-      setIsApiReady(true);
-    }
   }, []);
 
-  // Initialize players when API is ready
-  useEffect(() => {
-    if (!isApiReady) return;
+  // Fetch treatment shorts from backend
+  const fetchShorts = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/treatment-shorts");
+      setShorts(res.data);
+    } catch (err) {
+      console.error("Failed to fetch treatment shorts", err);
+    }
+  };
 
-    YOUTUBE_REELS.forEach((videoId, index) => {
-      const player = new window.YT.Player(`player-${index}`, {
-        height: "100%",
-        width: "100%",
-        videoId,
-        playerVars: {
-          autoplay: 1,
-          mute: 1,
-          controls: 0,
-          loop: 1,
-          playlist: videoId,
-          modestbranding: 1,
-          fs: 0,
-          disablekb: 1,
-          rel: 0,
-        },
-        events: {
-          onReady: (event: any) => {
-            event.target.mute();
-            event.target.playVideo();
-          },
-        },
-      });
-      playerInstances.current[index] = player;
+  useEffect(() => {
+    fetchShorts();
+  }, []);
+
+  // ✅ Initialize YouTube players when shorts are loaded
+  useEffect(() => {
+    if (shorts.length && ytReadyRef.current) {
+      initYouTubePlayers();
+    }
+  }, [shorts]);
+
+  const initYouTubePlayers = () => {
+    shorts.forEach((short, index) => {
+      if (short.platform === "youtube" && !playersRef.current[index]) {
+        const videoId = extractVideoId(short.videoUrl);
+        if (!videoId) return;
+
+        playersRef.current[index] = new (window as any).YT.Player(
+          `yt-player-${index}`,
+          {
+            videoId,
+            playerVars: {
+              autoplay: 0,
+              controls: 0,
+              modestbranding: 1,
+              rel: 0,
+              fs: 0,
+              showinfo: 0,
+              enablejsapi: 1,
+            },
+            events: {
+              onReady: (event: any) => {
+                event.target.mute(); // start muted
+              },
+            },
+          }
+        );
+      }
     });
-  }, [isApiReady]);
+  };
 
-  // Autoplay scroll logic
+  const extractVideoId = (url: string) => {
+    const regex =
+      /(?:youtube\.com\/shorts\/|youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : "";
+  };
+
+  // Auto-scroll slider
   useEffect(() => {
-    if (isHovered) return;
+    if (isHovered || shorts.length === 0) return;
 
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % YOUTUBE_REELS.length);
-    }, 3000);
+      setCurrent((prev) => {
+        const next = (prev + 1) % shorts.length;
+        containerRef.current?.scrollTo({
+          left: next * containerRef.current.offsetWidth * 0.75,
+          behavior: "smooth",
+        });
+        return next;
+      });
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, [isHovered]);
+  }, [isHovered, shorts.length]);
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const scrollLeft = e.currentTarget.scrollLeft;
-    const cardWidth = e.currentTarget.offsetWidth * 0.8;
-    const index = Math.round(scrollLeft / cardWidth);
-    setCurrent(index % YOUTUBE_REELS.length);
-  };
-
-  const toggleMute = (index: number) => {
-    const player = playerInstances.current[index];
-    if (!player) return;
-
-    const isMuted = mutedStates[index];
-    if (isMuted) {
-      player.unMute();
-    } else {
-      player.mute();
+  // ✅ Hover handlers
+  const handleMouseEnter = (index: number) => {
+    setIsHovered(true);
+    const short = shorts[index];
+    if (short.platform === "instagram") {
+      const vid = videoRefs.current[index];
+      if (vid) {
+        vid.muted = isMuted;
+        vid.play().catch(() => {});
+      }
+    } else if (short.platform === "youtube") {
+      const player = playersRef.current[index];
+      if (player && typeof player.playVideo === "function") {
+        isMuted ? player.mute() : player.unMute();
+        player.playVideo();
+      }
     }
-
-    const newStates = [...mutedStates];
-    newStates[index] = !isMuted;
-    setMutedStates(newStates);
   };
+
+  const handleMouseLeave = (index: number) => {
+    setIsHovered(false);
+    const short = shorts[index];
+    if (short.platform === "instagram") {
+      const vid = videoRefs.current[index];
+      if (vid) {
+        vid.pause();
+        vid.currentTime = 0;
+      }
+    } else if (short.platform === "youtube") {
+      const player = playersRef.current[index];
+      if (player && typeof player.pauseVideo === "function") {
+        player.pauseVideo();
+      }
+    }
+  };
+
+  // Toggle mute for all
+  const toggleMute = () => {
+    setIsMuted((prev) => {
+      const newState = !prev;
+
+      videoRefs.current.forEach((vid) => {
+        if (vid) vid.muted = newState;
+      });
+
+      playersRef.current.forEach((player) => {
+        if (player && typeof player.mute === "function") {
+          newState ? player.mute() : player.unMute();
+        }
+      });
+
+      return newState;
+    });
+  };
+
+  if (!shorts.length)
+    return <p style={{ textAlign: "center" }}>No treatment shorts available</p>;
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.slider} ref={containerRef} onScroll={handleScroll}>
-        {YOUTUBE_REELS.map((videoId, index) => (
+      <div className={styles.slider} ref={containerRef}>
+        {shorts.map((short, index) => (
           <div
+            key={short._id}
             className={`${styles.card} ${
               index === current ? styles.active : styles.inactive
             }`}
-            key={index}
-            onMouseEnter={() => {
-              setCurrent(index);
-              setIsHovered(true);
-            }}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseEnter={() => handleMouseEnter(index)}
+            onMouseLeave={() => handleMouseLeave(index)}
           >
             <div className={styles.videoWrapper}>
-              <div id={`player-${index}`} />
-              <button
-                className={styles.muteButton}
-                onClick={() => toggleMute(index)}
-              >
-                {mutedStates[index] ? "🔇" : "🔊"}
+              {short.platform === "youtube" ? (
+                <div
+                  id={`yt-player-${index}`}
+                  className={styles.youtubeIframe}
+                />
+              ) : (
+                <video
+                  ref={(el) => {
+                    videoRefs.current[index] = el;
+                  }}
+                  src={short.videoUrl} // must be direct .mp4 link
+                  muted
+                  playsInline
+                  controls={false}
+                  preload="metadata"
+                  className={styles.videoTag}
+                  loop
+                />
+              )}
+              <button className={styles.muteBtn} onClick={toggleMute}>
+                {isMuted ? "🔇" : "🔊"}
               </button>
             </div>
           </div>
@@ -137,14 +218,14 @@ const Treatment = () => {
       </div>
 
       <div className={styles.dots}>
-        {YOUTUBE_REELS.map((_, i) => (
+        {shorts.map((_, i) => (
           <span
             key={i}
             className={`${styles.dot} ${i === current ? styles.activeDot : ""}`}
             onClick={() => {
               setCurrent(i);
               containerRef.current?.scrollTo({
-                left: i * containerRef.current.offsetWidth * 0.8,
+                left: i * containerRef.current.offsetWidth * 0.75,
                 behavior: "smooth",
               });
             }}
@@ -155,4 +236,4 @@ const Treatment = () => {
   );
 };
 
-export default Treatment;
+export default TreatmentStories;

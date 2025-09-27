@@ -121,6 +121,7 @@
   width: 170px;
   height: 170px;
   border-radius: 8px;
+  cursor: pointer;
   margin-bottom: 10px;
 }
 
@@ -465,8 +466,8 @@ margin-right: 4rem;
     border-radius: 20px;
     padding: 8px 16px;
     width: 467px;
-    height: 50px;
-    margin: auto;
+    height: 40px;
+    margin: 0rem 0rem 0rem 39rem;
     max-width: 100%;
 }
 
@@ -492,9 +493,530 @@ margin-right: 4rem;
   .headerRow {
     flex-direction: column;
     align-items: flex-start;
+    display: none;
   }
 
   .searchBar {
     width: 100%;
+  }
+}
+.sidebarCard {
+  width: 123px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    margin-bottom: 12px;
+    transition: transform 0.2s 
+ease;
+}
+
+.sidebarCard:hover {
+  transform: scale(1.05);
+}
+
+.activeCategory {
+  outline: 2px solid #0070f3; /* highlight active category */
+}
+
+.sidebarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* make image fill card */
+  border-radius: 8px;
+}
+/* ================== MOBILE VIEW: ≤ 480px ================== */
+@media (max-width: 480px) {
+
+  /* Layout Wrapper */
+  .layoutWrapper {
+    flex-direction: column;
+    padding: 10px;
+    gap: 16px;
+  }
+
+  /* Sidebar: horizontal scroll + snap */
+  .sidebar {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    white-space: nowrap !important;
+    padding: 10px 5px !important;
+    background: transparent;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+  }
+
+  .sidebar::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .sidebar::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 3px;
+  }
+
+  .sidebarTitle {
+    display: none !important;
+  }
+
+  /* Sidebar Cards */
+  .sidebarCard {
+    flex: 0 0 auto !important;
+    min-width: 110px !important;
+    max-width: 120px !important;
+    background-color: #fff;
+    padding: 8px;
+    border-radius: 12px;
+    scroll-snap-align: start;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  .sidebarCard:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+
+  .sidebarImage {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 6px;
+  }
+
+  .sidebarName {
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+  }
+
+  /* Product Grid */
+  .productGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+    padding: 10px 8px;
+    justify-items: center;
+  }
+
+  .productCard {
+    height: 320px;
+    padding: 12px;
+    border-radius: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .productCard:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+
+  .productImage {
+    width: 130px;
+    height: 130px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  .productName {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+
+  .productSize {
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .productPriceContainer {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+
+  .productPrice {
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .productMrp {
+    font-size: 13px;
+    color: #777;
+    text-decoration: line-through;
+  }
+
+  .productDiscount {
+    font-size: 12px;
+    color: #35513f;
+    font-weight: bold;
+    text-decoration: underline dotted #35513f;
+  }
+
+  .productButton {
+    width: 90%;
+    font-size: 14px;
+    padding: 8px 0;
+    border-radius: 18px;
+    margin: 0 auto;
+  }
+
+  /* Section Padding */
+  .shopSection {
+    padding: 10px 5px;
+  }
+
+  /* Pagination */
+  .paginationContainer {
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 16px 0;
+  }
+
+  .paginationButton {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  /* Header Search */
+  .headerRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin: 10px;
+  }
+
+  .searchBar {
+    width: 100%;
+    max-width: 100%;
+  }
+
+}
+
+/* ================== EXTRA SMALL DEVICES: ≤ 370px ================== */
+@media (max-width: 370px) {
+
+  .sidebarCard {
+    min-width: 95px !important;
+    max-width: 100px !important;
+    padding: 6px;
+    border-radius: 10px;
+  }
+
+  .sidebarImage {
+    width: 80px;
+    height: 80px;
+  }
+
+  .sidebarName {
+    font-size: 11px;
+  }
+
+  .productCard {
+    height: 300px;
+    padding: 10px;
+  }
+
+  .productImage {
+    width: 120px;
+    height: 120px;
+  }
+
+  .productName {
+    font-size: 0.95rem;
+  }
+
+  .productButton {
+    font-size: 13px;
+    padding: 7px 0;
+  }
+
+  .productDiscount {
+    font-size: 11px;
+  }
+
+  .productPriceContainer {
+    gap: 2px;
+  }
+
+  .productSize {
+    font-size: 0.8rem;
+  }
+  .shopSection {
+    padding: 5px;
+  }
+}
+/* ================== MOBILE VIEW: ≤ 480px ================== */
+@media (max-width: 480px) {
+
+  /* Layout Wrapper */
+  .layoutWrapper {
+    flex-direction: column;
+    padding: 10px;
+    gap: 16px;
+  }
+
+  /* Sidebar: horizontal scroll + snap */
+  .sidebar {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    white-space: nowrap !important;
+    padding: 10px 5px !important;
+    background: transparent;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+  }
+
+  .sidebar::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .sidebar::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 3px;
+  }
+
+  .sidebarTitle {
+    display: none !important;
+  }
+
+  /* Sidebar Cards */
+  .sidebarCard {
+    flex: 0 0 auto !important;
+    min-width: 110px !important;
+    max-width: 120px !important;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 14px;
+    scroll-snap-align: start;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  .sidebarCard:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+  }
+
+  .sidebarImage {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+
+  .sidebarName {
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+  }
+
+  /* Product Grid */
+  .productGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    padding: 10px 8px;
+    justify-items: center;
+  }
+
+  /* Product Card */
+  .productCard {
+    height: auto;
+    padding: 14px;
+    border-radius: 16px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .productCard:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  }
+
+  .productImage {
+    width: 130px;
+    height: 130px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    object-fit: cover;
+  }
+
+  .productName {
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .productSize {
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 8px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .productPriceContainer {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .productPrice {
+    font-weight: bold;
+    font-size: 16px;
+    color: #155E95;
+  }
+
+  .productMrp {
+    font-size: 13px;
+    color: #777;
+    text-decoration: line-through;
+  }
+
+  .productDiscount {
+    font-size: 12px;
+    color: #35513f;
+    font-weight: bold;
+    text-decoration: underline dotted #35513f;
+  }
+
+  .productButton {
+    width: 90%;
+    font-size: 14px;
+    padding: 8px 0;
+    border-radius: 20px;
+    margin: 8px auto 0;
+    background-color: #155E95;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .productButton:hover {
+    background-color: #0e3859;
+  }
+
+  /* Section Padding */
+  .shopSection {
+    padding: 10px 5px;
+  }
+
+  /* Pagination */
+  .paginationContainer {
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 16px 0;
+  }
+
+  .paginationButton {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  /* Header Search */
+  .headerRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin: 10px;
+  }
+
+  .searchBar {
+    width: 100%;
+    max-width: 100%;
+  }
+
+}
+
+/* ================== EXTRA SMALL DEVICES: ≤ 370px ================== */
+@media (max-width: 370px) {
+
+  .sidebarCard {
+    min-width: 95px !important;
+    max-width: 100px !important;
+    padding: 6px;
+    border-radius: 14px;
+  }
+
+  .sidebarImage {
+    width: 80px;
+    height: 80px;
+  }
+
+  .sidebarName {
+    font-size: 11px;
+  }
+
+  .productCard {
+    padding: 10px;
+  }
+
+  .productImage {
+    width: 120px;
+    height: 120px;
+  }
+
+  .productName {
+    font-size: 0.95rem;
+  }
+
+  .productButton {
+    font-size: 13px;
+    padding: 7px 0;
+  }
+
+  .productDiscount {
+    font-size: 11px;
+  }
+
+  .productPriceContainer {
+    gap: 2px;
+  }
+
+  .productSize {
+    font-size: 0.8rem;
+  }
+
+  .shopSection {
+    padding: 5px;
   }
 }

@@ -16,11 +16,42 @@ const Appointment = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form Data:", formData);
-    // You can add backend submission logic here
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch("http://localhost:5000/api/appointments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Appointment Created:", data);
+
+      alert("Appointment booked successfully ✅");
+
+      // Reset form after successful submit
+      setFormData({
+        firstName: "",
+        lastName: "",
+        date: "",
+        doctor: "",
+      });
+    } else {
+      const errorData = await response.json();
+      console.error("Error creating appointment:", errorData);
+      alert(`Error: ${errorData.message || "Something went wrong"}`);
+    }
+  } catch (error) {
+    console.error("Network Error:", error);
+    alert("Failed to connect to server 🚨");
+  }
+};
+
 
   return (
     <div className={styles.appointmentContainer}>

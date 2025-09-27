@@ -1,150 +1,188 @@
+"use client";
 import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
 import styles from "@/styles/HappyStories.module.css";
 
-const YOUTUBE_REELS = [
-  "LjpGh3jfLn4",
-  "LjpGh3jfLn4",
-  "LjpGh3jfLn4",
-  "LjpGh3jfLn4",
-  "LjpGh3jfLn4",
-  "LjpGh3jfLn4",
-];
-
-declare global {
-  interface Window {
-    YT: any;
-    onYouTubeIframeAPIReady: () => void;
-  }
+interface Short {
+  _id: string;
+  platform: "youtube" | "instagram";
+  videoUrl: string;
 }
 
 const HappyStories = () => {
+  const [shorts, setShorts] = useState<Short[]>([]);
   const [current, setCurrent] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isApiReady, setIsApiReady] = useState(false);
-  const [mutedStates, setMutedStates] = useState(YOUTUBE_REELS.map(() => true));
+  const [isMuted, setIsMuted] = useState(true);
 
-  const playerInstances = useRef<any[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+  const playersRef = useRef<any[]>([]); // ✅ use any for YT players
 
-  // Load YouTube iframe API
+  // ✅ Fetch shorts from backend
   useEffect(() => {
-    if (!window.YT) {
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      document.body.appendChild(tag);
-    }
-
-    window.onYouTubeIframeAPIReady = () => {
-      setIsApiReady(true);
+    const fetchShorts = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/latest-shorts");
+        setShorts(res.data || []);
+      } catch (err) {
+        console.error("Failed to fetch shorts", err);
+      }
     };
-
-    if (window.YT && window.YT.Player) {
-      setIsApiReady(true);
-    }
+    fetchShorts();
   }, []);
 
-  // Initialize players when API is ready
+  // ✅ Load YouTube API and init players
   useEffect(() => {
-    if (!isApiReady) return;
+    if (!shorts.length) return;
 
-    YOUTUBE_REELS.forEach((videoId, index) => {
-      const player = new window.YT.Player(`player-${index}`, {
-        height: "100%",
-        width: "100%",
-        videoId,
-        playerVars: {
-          autoplay: 1,
-          mute: 1,
-          controls: 0,
-          loop: 1,
-          playlist: videoId,
-          modestbranding: 1,
-          fs: 0,
-          disablekb: 1,
-          rel: 0,
-        },
-        events: {
-          onReady: (event: any) => {
-            event.target.mute();
-            event.target.playVideo();
-          },
-        },
+    const initPlayers = () => {
+      shorts.forEach((short, i) => {
+        if (short.platform === "youtube" && !playersRef.current[i]) {
+          const videoId = extractVideoId(short.videoUrl);
+          if (!videoId) return;
+
+          playersRef.current[i] = new (window as any).YT.Player(
+            `yt-player-happy-${i}`,
+            {
+              videoId,
+              playerVars: {
+                autoplay: 0,
+                controls: 0,
+                modestbranding: 1,
+                rel: 0,
+                mute: 1,
+              },
+              events: {
+                onReady: (event: any) => {
+                  if (isMuted) event.target.mute();
+                },
+              },
+            }
+          );
+        }
       });
-      playerInstances.current[index] = player;
-    });
-  }, [isApiReady]);
+    };
 
-  // Autoplay scroll logic
-  useEffect(() => {
-    if (isHovered) return;
-
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % YOUTUBE_REELS.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [isHovered]);
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const scrollLeft = e.currentTarget.scrollLeft;
-    const cardWidth = e.currentTarget.offsetWidth * 0.8;
-    const index = Math.round(scrollLeft / cardWidth);
-    setCurrent(index % YOUTUBE_REELS.length);
-  };
-
-  const toggleMute = (index: number) => {
-    const player = playerInstances.current[index];
-    if (!player) return;
-
-    const isMuted = mutedStates[index];
-    if (isMuted) {
-      player.unMute();
+    if ((window as any).YT && (window as any).YT.Player) {
+      initPlayers();
     } else {
-      player.mute();
+      if (!document.getElementById("youtube-iframe-api")) {
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        tag.id = "youtube-iframe-api";
+        document.body.appendChild(tag);
+      }
+      (window as any).onYouTubeIframeAPIReady = () => {
+        initPlayers();
+      };
     }
+  }, [shorts, isMuted]);
 
-    const newStates = [...mutedStates];
-    newStates[index] = !isMuted;
-    setMutedStates(newStates);
+  // ✅ Auto-scroll every 5s
+  useEffect(() => {
+    if (!shorts.length) return;
+    const interval = setInterval(() => {
+      setCurrent((prev) => {
+        const next = (prev + 1) % shorts.length;
+        containerRef.current?.scrollTo({
+          left: next * (containerRef.current?.offsetWidth ?? 0),
+          behavior: "smooth",
+        });
+        return next;
+      });
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [shorts]);
+
+  // ✅ Toggle mute
+  const toggleMute = () => {
+    setIsMuted((prev) => !prev);
+    playersRef.current.forEach((player) => {
+      if (player) {
+        isMuted ? player.unMute() : player.mute();
+      }
+    });
   };
+
+  // ✅ Hover play only hovered video
+  const handleHover = (index: number, action: "enter" | "leave") => {
+    playersRef.current.forEach((player, i) => {
+      if (player && typeof player.playVideo === "function") {
+        if (i === index) {
+          action === "enter" ? player.playVideo() : player.pauseVideo();
+        } else {
+          player.pauseVideo();
+        }
+      }
+    });
+  };
+
+  if (!shorts.length)
+    return <p style={{ textAlign: "center" }}>No shorts available</p>;
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.slider} ref={containerRef} onScroll={handleScroll}>
-        {YOUTUBE_REELS.map((videoId, index) => (
+      <div className={styles.slider} ref={containerRef}>
+        {shorts.map((short, index) => (
           <div
+            key={short._id}
             className={`${styles.card} ${
               index === current ? styles.active : styles.inactive
             }`}
-            key={index}
-            onMouseEnter={() => {
-              setCurrent(index);
-              setIsHovered(true);
-            }}
-            onMouseLeave={() => setIsHovered(false)}
           >
-            <div className={styles.videoWrapper}>
-              <div id={`player-${index}`} />
-              <button
-                className={styles.muteButton}
-                onClick={() => toggleMute(index)}
-              >
-                {mutedStates[index] ? "🔇" : "🔊"}
-              </button>
+            <div
+              className={styles.videoWrapper}
+              onMouseEnter={() =>
+                short.platform === "youtube" && handleHover(index, "enter")
+              }
+              onMouseLeave={() =>
+                short.platform === "youtube" && handleHover(index, "leave")
+              }
+            >
+              {short.platform === "youtube" ? (
+                // ✅ YouTube video (controlled by API)
+                <div
+                  id={`yt-player-happy-${index}`}
+                  className={styles.youtubeIframe}
+                />
+              ) : (
+                // ✅ Instagram reel embed
+                <iframe
+                  src={
+                    short.videoUrl.includes("embed")
+                      ? short.videoUrl
+                      : `${short.videoUrl}embed`
+                  }
+                  width="100%"
+                  height="100%"
+                  frameBorder="0"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  className={styles.videoTag}
+                  title={`insta-${index}`}
+                />
+              )}
+              {short.platform === "youtube" && (
+                <button className={styles.muteBtn} onClick={toggleMute}>
+                  {isMuted ? "🔇" : "🔊"}
+                </button>
+              )}
             </div>
           </div>
         ))}
       </div>
 
+      {/* ✅ Dots navigation */}
       <div className={styles.dots}>
-        {YOUTUBE_REELS.map((_, i) => (
+        {shorts.map((_, i) => (
           <span
             key={i}
-            className={`${styles.dot} ${i === current ? styles.activeDot : ""}`}
+            className={`${styles.dot} ${
+              i === current ? styles.activeDot : ""
+            }`}
             onClick={() => {
               setCurrent(i);
               containerRef.current?.scrollTo({
-                left: i * containerRef.current.offsetWidth * 0.8,
+                left: i * (containerRef.current?.offsetWidth ?? 0),
                 behavior: "smooth",
               });
             }}
@@ -153,6 +191,14 @@ const HappyStories = () => {
       </div>
     </div>
   );
+};
+
+// ✅ Extract YouTube video ID
+const extractVideoId = (url: string) => {
+  const regex =
+    /(?:youtube\.com\/shorts\/|youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+  const match = url.match(regex);
+  return match ? match[1] : "";
 };
 
 export default HappyStories;

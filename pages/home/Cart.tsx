@@ -1,66 +1,29 @@
-// pages/cart.tsx
-import React, { useState } from "react";
-import styles from "@/styles/Cart.module.css";
+"use client";
+
+import React from "react";
+import { useCart } from "@/context/CartContext";
+import styles from "@/styles/Cart.module.css"; 
 import { FaTrashAlt, FaShoppingCart, FaCreditCard } from "react-icons/fa";
 import { FiHeart } from "react-icons/fi";
 import { GoLocation } from "react-icons/go";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import MobileNavbar from "@/components/Layout/MobileNavbar";
-import product1 from "@/public/product1.png";
-import product2 from "@/public/product2.jpg";
 
 const CartPage: React.FC = () => {
   const router = useRouter();
-
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "MuscleBlaze Micronised Creatine Monohydrate, Unflavoured 100 g",
-      price: 499,
-      mrp: 749,
-      discount: "33%",
-      reward: 10,
-      quantity: 1,
-      image: product1,
-    },
-    {
-      id: 2,
-      name: "GNC Pro Performance Power Protein, 4 lb Double Rich Chocolate",
-      price: 3499,
-      mrp: 6599,
-      discount: "46%",
-      reward: 0,
-      quantity: 1,
-      image: product2,
-    },
-  ]);
-
-  const increaseQty = (id: number) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
-  };
-
-  const decreaseQty = (id: number) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 } : item
-      )
-    );
-  };
+  const { cartItems, removeFromCart, updateQuantity } = useCart();
 
   const totalMRP = cartItems.reduce(
-    (acc, item) => acc + item.mrp * item.quantity,
+    (acc, item) => acc + (item.mrp ?? item.price) * item.quantity,
     0
   );
+
   const totalPrice = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
+    (acc, item) => acc + (item.price ?? 0) * item.quantity,
     0
   );
+
   const discount = totalMRP - totalPrice;
 
   return (
@@ -73,8 +36,9 @@ const CartPage: React.FC = () => {
           alt="Logo"
           width={155}
           height={45}
-        />
+                      onClick={() => router.push("/home")}
 
+        />
         <div className={styles.steps}>
           <div className={`${styles.step} ${styles.active}`}>
             <div className={styles.circle}>
@@ -99,16 +63,12 @@ const CartPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile-only top section for pin + coupon */}
+      {/* Mobile-only section */}
       <div className={styles.mobileTopOnly}>
         <div className={styles.pinRow}>
-          <input
-            placeholder="Enter Pin Code"
-            className={styles.pinInput}
-          />
+          <input placeholder="Enter Pin Code" className={styles.pinInput} />
           <button className={styles.checkBtn}>Check</button>
         </div>
-
         <div className={styles.couponRow}>
           <span className={styles.couponIcon}>⚙️</span>
           <span>Apply Coupon</span>
@@ -119,68 +79,80 @@ const CartPage: React.FC = () => {
       <div className={styles.container}>
         <div className={styles.left}>
           <h2 className={styles.title}>Shopping Cart</h2>
-          {cartItems.map((item) => (
-            <div key={item.id} className={styles.card}>
-              <Image
-                src={item.image}
-                alt={item.name}
-                className={styles.productImage}
-                width={100}
-                height={100}
-              />
-              <div className={styles.details}>
-                <div className={styles.name}>{item.name}</div>
-                <div className={styles.priceRow}>
-                  <span className={styles.price}>₹{item.price}</span>
-                  <span className={styles.discount}>{item.discount} OFF</span>
-                  {item.reward > 0 && (
-                    <span className={styles.reward}></span>
+
+          {cartItems.length === 0 ? (
+            <p>Your cart is empty.</p>
+          ) : (
+            cartItems.map((item) => (
+              <div key={item.id} className={styles.card}>
+                <Image
+                  src={item.image ?? "/product1.png"}
+                  alt={item.name}
+                  className={styles.productImage}
+                  width={100}
+                  height={100}
+                />
+                <div className={styles.details}>
+                  <div className={styles.name}>{item.name}</div>
+                  <div className={styles.priceRow}>
+                    <span className={styles.price}>₹{item.price}</span>
+                    {item.discount && (
+                      <span className={styles.discount}>{item.discount} OFF</span>
+                    )}
+                  </div>
+                  {item.mrp && (
+                    <div className={styles.mrp}>
+                      MRP: <s>₹{item.mrp}</s>
+                    </div>
                   )}
+                  <div className={styles.qtyRow}>
+                    <button
+                      onClick={() =>
+                        updateQuantity(item.id, Math.max(1, item.quantity - 1))
+                      }
+                      className={styles.qtyBtn}
+                    >
+                      −
+                    </button>
+                    <span className={styles.qty}>{item.quantity}</span>
+                    <button
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      className={styles.qtyBtn}
+                    >
+                      +
+                    </button>
+                  </div>
+                  <div className={styles.delivery}>
+                    🚚 Expected delivery in 3-4 days
+                  </div>
                 </div>
-                <div className={styles.mrp}>
-                  MRP: <s>₹{item.mrp}</s>
-                </div>
-                <div className={styles.qtyRow}>
-                  <button
-                    onClick={() => decreaseQty(item.id)}
-                    className={styles.qtyBtn}
-                  >
-                    −
-                  </button>
-                  <span className={styles.qty}>{item.quantity}</span>
-                  <button
-                    onClick={() => increaseQty(item.id)}
-                    className={styles.qtyBtn}
-                  >
-                    +
-                  </button>
-                </div>
-                <div className={styles.delivery}>
-                  🚚 Expected delivery in 3-4 days
+                <div className={styles.actions}>
+                  <FaTrashAlt
+                    className={styles.icon}
+                    onClick={() => removeFromCart(item.id)}
+                  />
+                  <FiHeart className={styles.icon} />
                 </div>
               </div>
-              <div className={styles.actions}>
-                <FaTrashAlt className={styles.icon} />
-                <FiHeart className={styles.icon} />
-              </div>
-            </div>
-          ))}
-          <div className={styles.continue} onClick={() => router.push('/home/Address')}>
+            ))
+          )}
+
+          <div
+            className={styles.continue}
+            onClick={() => router.push("/home/Address")}
+          >
             Continue Shopping
           </div>
         </div>
 
-        {/* Right section (desktop & tab only) */}
+        {/* Right Section */}
         <div className={styles.right}>
-          <div className={styles.pinRow + " " + styles.desktopOnly}>
-            <input
-              placeholder="Enter Pin Code"
-              className={styles.pinInput}
-            />
+          <div className={`${styles.pinRow} ${styles.desktopOnly}`}>
+            <input placeholder="Enter Pin Code" className={styles.pinInput} />
             <button className={styles.checkBtn}>Check</button>
           </div>
 
-          <div className={styles.couponRow + " " + styles.desktopOnly}>
+          <div className={`${styles.couponRow} ${styles.desktopOnly}`}>
             <span className={styles.couponIcon}>⚙️</span>
             <span>Apply Coupon</span>
           </div>
@@ -199,33 +171,26 @@ const CartPage: React.FC = () => {
               <span>₹{totalMRP}</span>
             </div>
             <div className={styles.summaryRow}>
-              <span>Total Discounts <i>ⓘ</i></span>
+              <span>Total Discounts</span>
               <span className={styles.green}>- ₹{discount}</span>
             </div>
             <div className={styles.summaryRow}>
-              <span>Loyalty Savings <i>ⓘ</i></span>
-              <span className={styles.strike}>(₹299)</span>
-            </div>
-            <div className={styles.saveExtra}>
-              Save extra ₹188 <span className={styles.link}>Add Membership</span>
-            </div>
-            <div className={styles.summaryRow}>
-              <span>Convenience Fee <i>ⓘ</i></span>
+              <span>Convenience Fee</span>
               <span>₹0</span>
             </div>
-            <hr/>
+            <hr />
             <div className={styles.totalPay}>
               <span>Payable Amount</span>
               <span>₹{totalPrice}</span>
             </div>
             <div className={styles.savingsNote}>
-              You will Save ₹{discount} & Earn ₹10 HK Cash on this order
+              You will Save ₹{discount} & Earn HK Cash on this order
             </div>
           </div>
         </div>
-
-        <MobileNavbar />
       </div>
+
+      <MobileNavbar />
     </>
   );
 };

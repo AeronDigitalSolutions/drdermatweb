@@ -1,14 +1,23 @@
+// components/CreateProduct.tsx
 "use client";
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import styles from "@/styles/Dashboard/createproduct.module.css";
 
-// Dynamically import ReactQuill to avoid SSR issues
+// Dynamically import ReactQuill
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
 
+interface Category {
+  id: string; // ✅ matches CAT-0001 style from ListOfCategory
+  name: string;
+  imageUrl: string;
+}
+
 const CreateProduct = () => {
-  const [image, setImage] = useState<string | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [images, setImages] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     category: "",
     company: "",
@@ -19,21 +28,51 @@ const CreateProduct = () => {
     description: "",
   });
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 1024 * 1024) {
-        alert("Image size should not exceed 1MB.");
-        return;
-      }
+  // Fetch categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/categories");
+        const data = await res.json();
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-        setImage(base64String);
-      };
-      reader.readAsDataURL(file);
+        // ✅ ensure consistent structure like ListOfCategory
+        const validCategories = data
+          .map((cat: any) => ({
+            id: cat.id,
+            name: cat.name,
+            imageUrl: cat.imageUrl,
+          }))
+          .filter((cat: Category) => cat.id && cat.id.trim() !== "");
+
+        setCategories(validCategories);
+      } catch (err) {
+        console.error("Failed to fetch categories:", err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const fileArr = Array.from(files);
+
+      fileArr.forEach((file) => {
+        if (file.size > 1024 * 1024) {
+          alert("Image size should not exceed 1MB.");
+          return;
+        }
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImages((prev) => [...prev, reader.result as string]);
+        };
+        reader.readAsDataURL(file);
+      });
     }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleChange = (
@@ -50,8 +89,13 @@ const CreateProduct = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!image) {
-      alert("Please upload an image.");
+    if (images.length === 0) {
+      alert("Please upload at least one image.");
+      return;
+    }
+
+    if (!formData.category) {
+      alert("Please select a category.");
       return;
     }
 
@@ -60,15 +104,13 @@ const CreateProduct = () => {
       quantity: Number(formData.quantity),
       price: Number(formData.price),
       discountPrice: Number(formData.discountPrice),
-      image, // Base64 image
+      images, // Send array of base64 images
     };
 
     try {
       const response = await fetch("http://localhost:5000/api/products", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(productData),
       });
 
@@ -78,7 +120,7 @@ const CreateProduct = () => {
       alert("✅ Product created successfully!");
       console.log("Created product:", result);
 
-      // Reset form after success
+      // Reset form
       setFormData({
         category: "",
         company: "",
@@ -88,7 +130,7 @@ const CreateProduct = () => {
         discountPrice: "",
         description: "",
       });
-      setImage(null);
+      setImages([]);
     } catch (error) {
       console.error("Error creating product:", error);
       alert("❌ Failed to create product. Check console for details.");
@@ -99,22 +141,41 @@ const CreateProduct = () => {
     <form className={styles.form} onSubmit={handleSubmit}>
       <h2 className={styles.heading}>Add New Product</h2>
 
+      {/* Image Upload */}
       <div className={styles.row}>
         <label className={styles.imageUpload}>
-          {image ? (
-            <img src={image} alt="Preview" className={styles.previewImage} />
-          ) : (
-            <span>Upload Image</span>
-          )}
+          <span>Upload Images</span>
           <input
             type="file"
             accept="image/*"
+            multiple
             className={styles.imageInput}
             onChange={handleImageUpload}
           />
         </label>
       </div>
 
+      {/* Preview images */}
+      <div className={styles.previewContainer}>
+        {images.map((img, index) => (
+          <div key={index} className={styles.previewWrapper}>
+            <img
+              src={img}
+              alt={`Preview ${index}`}
+              className={styles.previewImage}
+            />
+            <button
+              type="button"
+              onClick={() => handleRemoveImage(index)}
+              className={styles.removeBtn}
+            >
+              ✖
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {/* Category & Company */}
       <div className={styles.row}>
         <select
           name="category"
@@ -123,10 +184,11 @@ const CreateProduct = () => {
           className={styles.select}
         >
           <option value="">Select Category</option>
-          <option value="skincare">Skincare</option>
-          <option value="haircare">Haircare</option>
-          <option value="health">Health</option>
-          <option value="fitness">Fitness</option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.name} ({cat.id})
+            </option>
+          ))}
         </select>
 
         <select
@@ -143,6 +205,7 @@ const CreateProduct = () => {
         </select>
       </div>
 
+      {/* Name & Quantity */}
       <div className={styles.row}>
         <input
           type="text"
@@ -162,6 +225,7 @@ const CreateProduct = () => {
         />
       </div>
 
+      {/* Price & Discount */}
       <div className={styles.row}>
         <input
           type="number"
@@ -181,6 +245,7 @@ const CreateProduct = () => {
         />
       </div>
 
+      {/* Description */}
       <div className={styles.richTextWrapper}>
         <ReactQuill
           value={formData.description}

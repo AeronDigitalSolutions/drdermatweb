@@ -4,6 +4,8 @@ export interface Product {
   image: string[];
   name: string;
   size: string;
+    category: { _id: string; name: string }; // ✅ updated
+
   price: number;
   mrp: number;
   discount: string;

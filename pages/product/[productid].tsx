@@ -1,355 +1,316 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
-import { productsCardListData } from "@/data/productsCardListData";
-import { productResultData } from "@/data/productResultData";
-import styles from "@/styles/Products.module.css"; // Create this CSS file
-import Topbar from "@/components/Layout/Topbar"; // Create this component
-import { useState } from "react";
+import axios from "axios";
+import styles from "@/styles/Products.module.css";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { FaStar, FaRegHeart } from "react-icons/fa";
+import { FiShare2 } from "react-icons/fi";
+import MobileNavbar from "@/components/Layout/MobileNavbar";
+import Topbar from "@/components/Layout/Topbar";
 import Footer from "@/components/Layout/Footer";
-import reviews from "@/data/reviews"; // Import reviews data
-import Ratings from "@/components/Layout/Reviews";
 
-const icons = [
-  { label: "Dye Free", img: "/icons/dye-free.png" },
-  { label: "Mineral Oil Free", img: "/icons/mineral-free.png" },
-  { label: "Paraben Free", img: "/icons/paraben-free.png" },
-  { label: "Sulfate Free", img: "/icons/sulfate-free.png" },
-];
+interface Review {
+  rating: number;
+  comment: string;
+  user?: string;
+  createdAt?: string;
+}
 
-const ProductDetail = () => {
+interface Product {
+  _id: string;
+  name: string;
+  description?: string;
+  category?: string;
+  company?: string;
+  price?: number;
+  discountPrice?: number;
+  quantity?: number;
+  images?: string[];
+  reviews: Review[];
+}
+
+export default function ProductDetail() {
   const router = useRouter();
   const { productid } = router.query;
-  //extract product id from url
-  const numericProductId = parseInt(productid as string);
 
-  //review data associated with the product
-  const productResult = productResultData.find(
-    (result) => result.productId === numericProductId
-  );
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1);
+  const [activeTab, setActiveTab] = useState<"details" | "services" | "reviews">("details");
+  const [mainImage, setMainImage] = useState<string | null>(null);
 
-  const [activeTab, setActiveTab] = useState("Result"); // State to manage active tab
+  // Zoom
+  const [isZooming, setIsZooming] = useState(false);
+  const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const imageRef = useRef<HTMLDivElement>(null);
 
-  const product = productsCardListData.find((p) => p.id === Number(productid));
-  const [selectedImage, setSelectedImage] = useState(product?.image[0]);
+  // New review form
+  const [newComment, setNewComment] = useState("");
+  const [newRating, setNewRating] = useState(0);
 
-  if (!product) return <p>Product not found</p>;
+  // Fetch product with reviews
+  useEffect(() => {
+    if (!productid) return;
+    const fetchProduct = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/products/${productid}`);
+        setProduct(res.data);
+        setMainImage(res.data.images?.[0] || null);
+      } catch (err) {
+        console.error("Error fetching product:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProduct();
+  }, [productid]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!imageRef.current) return;
+    const { left, top, width, height } = imageRef.current.getBoundingClientRect();
+    const x = e.pageX - left;
+    const y = e.pageY - top;
+    const lensX = Math.max(0, Math.min(x, width));
+    const lensY = Math.max(0, Math.min(y, height));
+    setLensPosition({ x: lensX, y: lensY });
+    setCursorPos({ x: e.pageX, y: e.pageY });
+  };
+
+  const handleReviewSubmit = async () => {
+    if (!newComment.trim() || newRating === 0 || !productid) return;
+    try {
+      const res = await axios.post(`http://localhost:5000/api/products/${productid}/reviews`, {
+        rating: newRating,
+        comment: newComment,
+        user: "Guest User", // Replace with logged-in user if available
+      });
+      setProduct((prev) => (prev ? { ...prev, reviews: res.data } : null));
+      setNewComment("");
+      setNewRating(0);
+    } catch (err) {
+      console.error("Error submitting review:", err);
+    }
+  };
+
+  if (loading) return <p style={{ padding: 20 }}>Loading...</p>;
+  if (!product) return <p style={{ padding: 20 }}>Product not found</p>;
+
+  // Average rating
+  const averageRating =
+    product.reviews.length > 0
+      ? product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length
+      : 0;
 
   return (
     <>
-      {/* Header */}
       <Topbar />
-
-      {/* <div className={styles.searchContainer}>
-      <div className={styles.searchBar}>
-        <input
-          type="text"
-          placeholder="Search Products for you"
-          className={styles.searchInput}
-        />
-        <Search className={styles.searchIcon} size={20} />
-      </div>
-    </div> */}
-
-      <div className={styles.productDetailPage}>
-        {/* Product Showcase */}
-        <section className={styles.productHeader}>
-          <div className={styles.imageGallery}>
-            <img
-              src={selectedImage}
-              alt={product.name}
-              className={styles.mainImage}
-            />
-
-            {/* STATIC RENDERING */}
-            {/* <div className={styles.thumbnailContainer}>
-          <img src={product.image} alt="thumb1" className={styles.thumbnail} />
-          <img src={product.image} alt="thumb2" className={styles.thumbnail} />
-          <img src={product.image} alt="thumb3" className={styles.thumbnail} />
-        </div> */}
-
-            <div className={styles.thumbnailContainer}>
-              {product.image.map((img, index) => (
+      <div className={styles.wrapper}>
+        {/* TOP SECTION */}
+        <div className={styles.topSection}>
+          {/* LEFT COLUMN */}
+          <div className={styles.leftColumn}>
+            <div className={styles.thumbnailWrapper}>
+              {product.images?.map((img, i) => (
                 <img
-                  key={index}
+                  key={i}
                   src={img}
-                  alt={`thumbNail ${index + 1}`}
-                  className={`${styles.thumbnail} ${
-                    selectedImage === img ? styles.activeThumbnail : ""
-                  }`}
-                  onClick={() => setSelectedImage(img)}
+                  alt={`${product.name} ${i}`}
+                  className={`${styles.thumbnail} ${mainImage === img ? styles.activeThumbnail : ""}`}
+                  onClick={() => setMainImage(img)}
                 />
               ))}
             </div>
-          </div>
 
-          <div className={styles.productInfo}>
-            <h1 className={styles.productName}>{product.name}</h1>
-            <p className={styles.productRating}>★ {product.rating}</p>
-            <p>{product.size}</p>
-            <div className={styles.productPrice}>
-              ₹{product.price}
-              <span className={styles.mrp}>₹{product.mrp}</span>
-              <span className={styles.discount}>{product.discount}</span>
+            <div
+              className={styles.mainImageWrapper}
+              ref={imageRef}
+              onMouseEnter={() => setIsZooming(true)}
+              onMouseLeave={() => setIsZooming(false)}
+              onMouseMove={handleMouseMove}
+            >
+              {mainImage ? (
+                <img src={mainImage} alt={product.name} className={styles.mainImage} />
+              ) : (
+                <div className={styles.noImage}>No Image</div>
+              )}
             </div>
-            <p className={styles.productDescription}>{product.description}</p>
-            <button className={styles.addToCartButton}>Buy Now</button>
-            <button className={styles.addToCartButton}>Add to Cart</button>
-          </div>
-        </section>
 
+            {isZooming && mainImage && (
+              <div
+                className={styles.zoomBox}
+                style={{
+                  top: cursorPos.y + 20,
+                  left: cursorPos.x + 20,
+                  backgroundImage: `url(${mainImage})`,
+                  backgroundPosition: `${(lensPosition.x / (imageRef.current?.offsetWidth || 1)) * 100}% ${(lensPosition.y / (imageRef.current?.offsetHeight || 1)) * 100}%`,
+                }}
+              />
+            )}
+          </div>
+
+          {/* RIGHT COLUMN */}
+          <div className={styles.rightColumn}>
+            <p className={styles.breadcrumb}>{product.category}</p>
+            <h1 className={styles.title}>{product.name}</h1>
+            <p className={styles.brand}>
+              By <span>{product.company || "Unknown"}</span>
+            </p>
+
+            <div className={styles.rating}>
+              {[...Array(5)].map((_, i) => (
+                <FaStar
+                  key={i}
+                  className={`${styles.star} ${i < Math.round(averageRating) ? styles.starActive : ""}`}
+                />
+              ))}
+              <span>
+                {averageRating.toFixed(1)} ({product.reviews.length} reviews)
+              </span>
+              <FaRegHeart className={styles.icon} />
+              <FiShare2 className={styles.icon} />
+            </div>
+
+            <div className={styles.priceBox}>
+              {product.discountPrice && (
+                <p className={styles.mrp}>
+                  MRP: <span>₹{product.discountPrice}</span>
+                </p>
+              )}
+              {product.price && (
+                <p className={styles.price}>
+                  Price: <span>₹{product.price}</span>
+                  {product.discountPrice && (
+                    <span className={styles.discount}>
+                      {Math.round(((product.discountPrice - product.price) / product.discountPrice) * 100)}% off
+                    </span>
+                  )}
+                </p>
+              )}
+              <p className={styles.tax}>Inclusive of all taxes</p>
+            </div>
+
+            <div className={styles.actions}>
+              <div className={styles.quantity}>
+                <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
+                  <AiOutlineMinus />
+                </button>
+                <span>{quantity}</span>
+                <button onClick={() => setQuantity((q) => q + 1)}>
+                  <AiOutlinePlus />
+                </button>
+              </div>
+              <button className={styles.addToCart}>Add To Cart</button>
+              <button className={styles.buyNow}>Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        {/* Tabs */}
         <div className={styles.tabContainer}>
           <button
-            className={`${styles.tabButton} ${
-              activeTab === "Result" ? styles.activeTab : ""
-            }`}
-            onClick={() => setActiveTab("Result")}
-          >
-            Result
-          </button>
-          <button
-            className={`${styles.tabButton} ${
-              activeTab === "Details" ? styles.activeTab : ""
-            }`}
-            onClick={() => setActiveTab("Details")}
+            className={`${styles.tabButton} ${activeTab === "details" ? styles.activeTab : ""}`}
+            onClick={() => setActiveTab("details")}
           >
             Details
           </button>
           <button
-            className={`${styles.tabButton} ${
-              activeTab === "Reviews" ? styles.activeTab : ""
-            }`}
-            onClick={() => setActiveTab("Reviews")}
+            className={`${styles.tabButton} ${activeTab === "services" ? styles.activeTab : ""}`}
+            onClick={() => setActiveTab("services")}
+          >
+            Product Information
+          </button>
+          <button
+            className={`${styles.tabButton} ${activeTab === "reviews" ? styles.activeTab : ""}`}
+            onClick={() => setActiveTab("reviews")}
           >
             Reviews
           </button>
         </div>
-      </div>
 
-      {activeTab === "Details" && (
-        <section>
-          <div className={styles.detailsContainer}>
-            <div className={styles.codShipping}>
-              <div>
-                <img src="/icons/cod.png" alt="COD" />
-                <p>
-                  <strong>COD Available</strong>
-                  <br />@ ₹19 per Order
-                </p>
-              </div>
-              <div>
-                <img src="/icons/shipping.png" alt="Shipping" />
-                <p>
-                  <strong>Free Shipping</strong>
-                  <br />
-                  Above ₹399
-                </p>
-              </div>
-            </div>
+        {/* Tab Content */}
+        <div className={styles.tabContent}>
+          {activeTab === "details" && (
+            <section className={styles.detailsSection}>
+              <h2 className={styles.title}>Product Details</h2>
+              {product.description ? (
+                <div
+                  className={styles.description}
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                />
+              ) : (
+                <p>No details available.</p>
+              )}
+            </section>
+          )}
 
-            <div className={styles.contactSection}>
-              <p>Have Queries or Concerns? Contact Us</p>
-              <button className={styles.contactButton}>Contact Us</button>
-            </div>
+          {activeTab === "services" && (
+            <section className={styles.detailsSection}>
+              <h2 className={styles.title}>Product Information</h2>
+              <ul>
+                <li><strong>Category:</strong> {product.category}</li>
+                <li><strong>Company:</strong> {product.company}</li>
+                <li><strong>Quantity in Stock:</strong> {product.quantity}</li>
+              </ul>
+            </section>
+          )}
 
-            <div className={styles.features}>
-              {icons.map((item, idx) => (
-                <div key={idx} className={styles.featureItem}>
-                  <img src={item.img} alt={item.label} />
-                  <p>{item.label}</p>
+          {activeTab === "reviews" && (
+            <section className={styles.detailsSection}>
+              <h2 className={styles.title}>Customer Reviews</h2>
+
+              {/* Review Form */}
+              <div className={styles.reviewForm}>
+                <div className={styles.starsInput}>
+                  {[...Array(5)].map((_, i) => (
+                    <FaStar
+                      key={i}
+                      className={`${styles.starInput} ${i < newRating ? styles.starActive : ""}`}
+                      onClick={() => setNewRating(i + 1)}
+                    />
+                  ))}
                 </div>
-              ))}
-            </div>
-
-            <div className={styles.paymentSection}>
-              <p>Pay Using</p>
-              <img src="/icons/payment-methods.png" alt="Payments" />
-              <div className={styles.securePayment}>
-                <img src="/icons/secure-payment.png" alt="Secure Payment" />
-                <p>100% Secure Payment</p>
+                <textarea
+                  className={styles.commentBox}
+                  placeholder="Write your review..."
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                />
+                <button className={styles.submitReview} onClick={handleReviewSubmit}>
+                  Submit Review
+                </button>
               </div>
-            </div>
 
-            <div className={styles.socials}>
-              <img src="/icons/socials.png" alt="Social Icons" />
-            </div>
-          </div>
-        </section>
-      )}
-
-      {activeTab === "Reviews" && (
-        <section>
-          <div className={styles.reviewsContainer}>
-            {activeTab === "Reviews" && (
-              <section className={styles.reviewSection}>
-                {/* ... static review stats ... */}
-
-                <Ratings />
-
-                {reviews.map(
-                  (
-                    review: {
-                      initials:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | React.ReactPortal
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                      name:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | React.ReactPortal
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                      verified: any;
-                      date:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | React.ReactPortal
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                      rating: number;
-                      title:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | React.ReactPortal
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                      content:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | React.ReactPortal
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                    },
-                    idx: React.Key | null | undefined
-                  ) => (
-                    <div className={styles.reviewCard} key={idx}>
-                      <div className={styles.avatar}>{review.initials}</div>
-                      <div className={styles.reviewContent}>
-                        <div className={styles.reviewTop}>
-                          <strong>{review.name}</strong>
-                          {review.verified && (
-                            <span className={styles.verified}>
-                              Verified User
-                            </span>
-                          )}
-                          <span className={styles.reviewDate}>
-                            {review.date}
-                          </span>
-                        </div>
-                        <div className={styles.reviewStars}>
-                          {"★".repeat(review.rating)}
-                        </div>
-                        <p className={styles.reviewText}>
-                          <strong>{review.title}</strong>
-                          <br />
-                          {review.content}
-                        </p>
+              {/* Reviews List */}
+              <div className={styles.reviewsList}>
+                {product.reviews.length === 0 ? (
+                  <p>No reviews yet.</p>
+                ) : (
+                  product.reviews.map((rev, idx) => (
+                    <div key={idx} className={styles.reviewItem}>
+                      <div className={styles.reviewStars}>
+                        {[...Array(5)].map((_, i) => (
+                          <FaStar
+                            key={i}
+                            className={`${styles.starInput} ${i < rev.rating ? styles.starActive : ""}`}
+                          />
+                        ))}
                       </div>
+                      <p className={styles.reviewComment}>{rev.comment}</p>
+                      <small>{rev.user ?? "Anonymous"} •{" "}
+                        {rev.createdAt ? new Date(rev.createdAt).toLocaleDateString() : ""}
+                      </small>
                     </div>
-                  )
+                  ))
                 )}
-              </section>
-            )}
-          </div>
-        </section>
-      )}
-
-      {activeTab === "Result" && (
-        <div className={styles.resultTabContainer}>
-          {/* Section 1 */}
-
-          {productResult ? (
-            productResult.heading.map((heading, idx) => (
-              <div className={styles.resultRow} key={idx}>
-                <img
-                  src={productResult.image[idx]}
-                  alt={heading}
-                  className={styles.resultImage}
-                />
-                <div className={styles.resultText}>
-                  <h3 className={styles.resultTitle}>
-                    {productResult.heading[idx]}
-                  </h3>
-                  <p className={styles.productDescription}>
-                    {productResult.description[idx]}
-                  </p>
-                </div>
               </div>
-            ))
-          ) : (
-            <p>No results found for this product...</p>
-          )}
-        </div>
-      )}
-
-      {/* Key Ingredients */}
-      <div className={styles.ingredientsSection}>
-        <h2 className={styles.ingredientsHeading}>Key Ingredients</h2>
-
-        <div className={styles.ingredientsList}>
-          {productResult ? (
-            productResult.ingredientsImg.map((img, idx) => (
-              <div className={styles.ingredientItem} key={idx}>
-                <img
-                  src={productResult.ingredientsImg[idx]}
-                  alt={productResult.ingredientsDescription[idx]}
-                  className={styles.ingredientImage}
-                />
-                <p className={styles.ingredientText}>
-                  {productResult.ingredientsDescription[idx]}
-                </p>
-              </div>
-            ))
-          ) : (
-            <p>No ingredients found for this product...</p>
+            </section>
           )}
         </div>
       </div>
-      {/* Footer */}
+      <MobileNavbar />
       <Footer />
     </>
   );
-};
-
-export default ProductDetail;
+}

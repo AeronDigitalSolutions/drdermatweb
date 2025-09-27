@@ -1,64 +1,81 @@
-import React, { createContext, useContext, useState } from "react";
+"use client";
 
-// Define the shape of cart items
-interface CartItem {
+import React, { createContext, useContext, useState, ReactNode } from "react";
+
+// ----------------------
+// Types
+// ----------------------
+export interface CartItem {
   id: string;
   name: string;
   price: number;
+  mrp?: number;
+  discount?: string;
+  discountPrice?: number;
+  company?: string;
+  image?: string;
   quantity: number;
 }
 
-// Define the CartContext type
 interface CartContextType {
-  cart: CartItem[];
-  addToCart: (item: CartItem) => void;
+  cartItems: CartItem[];
+  addToCart: (product: Omit<CartItem, "quantity">, quantity?: number) => void;
   removeFromCart: (id: string) => void;
+  updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
 }
 
-// Create the context
+// ----------------------
+// Context
+// ----------------------
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-// Create the provider
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+// ----------------------
+// Provider
+// ----------------------
+export const CartProvider = ({ children }: { children: ReactNode }) => {
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  // Add item to cart
-  const addToCart = (item: CartItem) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
-      
-      if (existingItem) {
-        // If item exists, update its quantity
-        return prevCart.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
+  const addToCart = (product: Omit<CartItem, "quantity">, quantity = 1) => {
+    setCartItems((prev) => {
+      const existing = prev.find((item) => item.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
         );
       }
-      // Otherwise, add a new item
-      return [...prevCart, { ...item, quantity: 1 }];
+      return [...prev, { ...product, quantity }];
     });
   };
 
-  // Remove item from cart
   const removeFromCart = (id: string) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
-  // Clear the cart
-  const clearCart = () => {
-    setCart([]);
+  const updateQuantity = (id: string, quantity: number) => {
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item
+      )
+    );
   };
+
+  const clearCart = () => setCartItems([]);
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider
+      value={{ cartItems, addToCart, removeFromCart, updateQuantity, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );
 };
 
-// Custom hook to use the cart context
+// ----------------------
+// Hook
+// ----------------------
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
