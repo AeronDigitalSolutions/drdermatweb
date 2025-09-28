@@ -7,7 +7,11 @@
     margin: 20px 2rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
-
+.icons{
+  padding-right:7px;
+  font-size: 25px;
+  text-align: center;
+}
   .leftSection {
     width: 200px;
     min-width: 200px;
@@ -18,6 +22,7 @@
     height: 100%;
     object-fit: cover;
     border-radius: 8px;
+    padding: 1rem 1rem;
   }
 
   .rightSection {
@@ -28,6 +33,7 @@
     justify-content: space-between;
     height: 32vh;
     padding-left: 11rem;
+        cursor: pointer;
   }
 
   .nameRow {
@@ -63,7 +69,7 @@
   }
 
   .rating {
-    background-color: #1c8a42;
+    background-color: #1f71a7;
     color: white;
     padding: 4px 8px;
     border-radius: 6px;
@@ -110,7 +116,7 @@
   }
 
   .call {
-    background-color: #1c8a42;
+    background-color: #2987c6;
     color: white;
     border: none;
     padding: 8px 14px;
@@ -120,6 +126,7 @@
     display: flex;
     align-items: center;
     gap: 5px;
+    height: 35px;
   }
 
   .whatsapp {
@@ -127,14 +134,17 @@
     color: #1c8a42;
     background-color: #fff;
     padding: 8px 14px;
-    border-radius: 6px;
+    border-radius: 25px;
     cursor: pointer;
+        display: flex;
+        align-items: center;
     font-size: 14px;
+    height: 35px;
   }
 
   .direction,
   .details {
-    background-color: #0072e0;
+    background-color: #2987c6;
     color: white;
     border: none;
     padding: 8px 14px;
@@ -198,3 +208,38 @@
 }
 
   }
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.prevBtn,
+.nextBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prevBtn {
+  left: 20px;
+}
+
+.nextBtn {
+  right: -87px;
+}
+
+.prevBtn:hover,
+.nextBtn:hover {
+  background: rgba(0, 0, 0, 0.7);
+}

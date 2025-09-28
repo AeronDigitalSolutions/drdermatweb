@@ -7,6 +7,7 @@ interface Admin {
   name: string;
   email: string;
   number: string;
+  role: "admin" | "superadmin"; // ✅ added role
   createdAt: string;
 }
 
@@ -50,7 +51,9 @@ function ListOfAdmin() {
     setEditModal(true);
   };
 
-  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEditChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     if (!currentAdmin) return;
     setCurrentAdmin({ ...currentAdmin, [e.target.name]: e.target.value });
   };
@@ -60,11 +63,14 @@ function ListOfAdmin() {
     if (!currentAdmin) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/admins/${currentAdmin._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(currentAdmin),
-      });
+      const res = await fetch(
+        `http://localhost:5000/api/admins/${currentAdmin._id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(currentAdmin),
+        }
+      );
 
       if (res.ok) {
         setEditModal(false);
@@ -92,6 +98,7 @@ function ListOfAdmin() {
               <th>Name</th>
               <th>Email</th>
               <th>Phone</th>
+              <th>Role</th> {/* ✅ Added role column */}
               <th>Actions</th>
             </tr>
           </thead>
@@ -102,9 +109,20 @@ function ListOfAdmin() {
                 <td>{admin.name}</td>
                 <td>{admin.email}</td>
                 <td>{admin.number}</td>
+                <td>{admin.role}</td> {/* ✅ Display role */}
                 <td className={styles.actions}>
-                  <button onClick={() => handleEdit(admin)} className={styles.editButton}>Edit</button>
-                  <button onClick={() => handleDelete(admin._id)} className={styles.deleteButton}>Delete</button>
+                  <button
+                    onClick={() => handleEdit(admin)}
+                    className={styles.editButton}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(admin._id)}
+                    className={styles.deleteButton}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -149,9 +167,27 @@ function ListOfAdmin() {
                 required
                 placeholder="Phone Number"
               />
+
+              {/* ✅ Dropdown for Role */}
+              <select
+                name="role"
+                value={currentAdmin.role}
+                onChange={handleEditChange}
+                className={styles.select}
+              >
+                <option value="admin">Admin</option>
+                <option value="superadmin">Superadmin</option>
+              </select>
+
               <div className={styles.modalActions}>
-                <button type="submit" className={styles.saveButton}>Save</button>
-                <button onClick={() => setEditModal(false)} type="button" className={styles.cancelButton}>
+                <button type="submit" className={styles.saveButton}>
+                  Save
+                </button>
+                <button
+                  onClick={() => setEditModal(false)}
+                  type="button"
+                  className={styles.cancelButton}
+                >
                   Cancel
                 </button>
               </div>

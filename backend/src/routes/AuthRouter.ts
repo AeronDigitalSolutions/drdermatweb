@@ -1,11 +1,20 @@
-// routes/AuthRouter.ts
+// routes/authRoutes.ts
 import { Router } from "express";
-import { login, signup } from "../controllers/AuthController";
-import { validateLogin, validateSignup } from "../middleware/AuthValidation";
+import {
+  adminSignup,
+  adminLogin,
+  userSignup,
+  userLogin,
+} from "../controllers/AuthController";
 
 const router = Router();
 
-router.post("/signup", validateSignup, signup);
-router.post("/login", validateLogin, login);
+// ------------------ ADMIN ROUTES ------------------
+router.post("/admin/signup", adminSignup);
+router.post("/admin/login", adminLogin);
 
-export default router;
+// ------------------ USER ROUTES ------------------
+router.post("/user/signup", userSignup);
+router.post("/user/login", userLogin);
+
+export default router; // ✅ important for Express

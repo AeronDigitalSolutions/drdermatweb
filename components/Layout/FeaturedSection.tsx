@@ -17,7 +17,7 @@ const FeaturedSection = ({ slides }: ImageSliderProps) => {
   const router = useRouter();
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const imagePaths = ["/clinic/1", "/clinic/2", "/home/findClinicsPage"];
+  const imagePaths = ["/home/findClinicsPage", "/#", "/#"];
 
   const handleImageClick = (index: number) => {
     router.push(imagePaths[index]);

@@ -1,66 +1,76 @@
-import express, { Request, Response } from 'express';
-import Category from '../models/Category';
+// routes/categoryRoutes.ts
+import express, { Request, Response } from "express";
+import Category from "../models/Category";
 
 const router = express.Router();
 
-// ✅ POST /api/categories - Create category with base64 image
-router.post('/', async (req: Request, res: Response) => {
+// ✅ Get all categories
+router.get("/", async (_req: Request, res: Response) => {
   try {
-    const { name, type, imageUrl } = req.body;
+    const categories = await Category.find({}, "id name imageUrl").lean();
+    const validCategories = categories.filter(
+      (cat) => cat.id && cat.id.trim() !== ""
+    );
+    res.json(validCategories);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
-    if (!name || !type || !imageUrl) {
-      return res.status(400).json({ message: 'All fields are required.' });
+// ✅ Create a new category (auto-generate ID)
+router.post("/", async (req: Request, res: Response) => {
+  try {
+    const { name, imageUrl } = req.body;
+    if (!name || !imageUrl) {
+      return res
+        .status(400)
+        .json({ message: "name and imageUrl are required" });
     }
 
-    const newCategory = new Category({ name, type, imageUrl });
-    await newCategory.save();
+    // Find latest cat-X
+    const lastCategory = await Category.findOne({})
+      .sort({ createdAt: -1 })
+      .lean();
 
-    res.status(201).json(newCategory);
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to create category.', error: err });
+    let newId = "cat-1";
+    if (lastCategory && lastCategory.id) {
+      const lastNum = parseInt(lastCategory.id.split("-")[1], 10);
+      newId = `cat-${lastNum + 1}`;
+    }
+
+    const category = new Category({ id: newId, name, imageUrl });
+    await category.save();
+
+    res.status(201).json(category);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
   }
 });
 
-// ✅ GET /api/categories - List all categories
-router.get('/', async (_req: Request, res: Response) => {
+// ✅ Update category
+router.put("/:id", async (req: Request, res: Response) => {
   try {
-    const categories = await Category.find();
-    res.status(200).json(categories);
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to fetch categories.', error: err });
+    const { name, imageUrl } = req.body;
+    const updated = await Category.findOneAndUpdate(
+      { id: req.params.id },
+      { name, imageUrl },
+      { new: true }
+    );
+    if (!updated) return res.status(404).json({ message: "Category not found" });
+    res.json(updated);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
   }
 });
 
-// ✅ DELETE /api/categories/:id - Delete category only (no file deletion)
-router.delete('/:id', async (req: Request, res: Response) => {
+// ✅ Delete category
+router.delete("/:id", async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const category = await Category.findById(id);
-    if (!category) return res.status(404).json({ message: 'Category not found.' });
-
-    await Category.findByIdAndDelete(id);
-    res.status(200).json({ message: 'Category deleted successfully.' });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to delete category.', error: err });
-  }
-});
-
-// ✅ PUT /api/categories/:id - Update category with base64 image
-router.put('/:id', async (req: Request, res: Response) => {
-  try {
-    const { name, type, imageUrl } = req.body;
-    const category = await Category.findById(req.params.id);
-
-    if (!category) return res.status(404).json({ message: 'Category not found.' });
-
-    category.name = name || category.name;
-    category.type = type || category.type;
-    if (imageUrl) category.imageUrl = imageUrl;
-
-    const updatedCategory = await category.save();
-    res.status(200).json(updatedCategory);
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to update category.', error: err });
+    const deleted = await Category.findOneAndDelete({ id: req.params.id });
+    if (!deleted) return res.status(404).json({ message: "Category not found" });
+    res.json({ message: "Category deleted" });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
   }
 });
 

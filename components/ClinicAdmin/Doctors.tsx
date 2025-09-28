@@ -8,29 +8,76 @@ const Doctor = () => {
     firstName: "",
     lastName: "",
     specialist: "",
+    email: "",
+    password: "",
   });
 
-  const titles = ["Dr.", "Prof.", "Mr.", "Ms."];
-  const specialists = ["Dermatologist", "Cardiologist", "Neurologist", "Pediatrician"];
+  const [message, setMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const titles = ["Dr.", "Prof.", "Mr.", "Ms."];
+  const specialists = [
+    "Dermatologist",
+    "Cardiologist",
+    "Neurologist",
+    "Pediatrician",
+  ];
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Doctor Data:", formData);
-    // Add API/backend logic here
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      const res = await fetch("http://localhost:5000/api/doctors", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage("✅ Doctor created successfully!");
+        setFormData({
+          title: "",
+          firstName: "",
+          lastName: "",
+          specialist: "",
+          email: "",
+          password: "",
+        });
+      } else {
+        setMessage(`❌ Error: ${data.message || "Something went wrong"}`);
+      }
+    } catch (error) {
+      console.error("Error creating doctor:", error);
+      setMessage("❌ Server error. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className={styles.doctorContainer}>
       <h1 className={styles.pageTitle}>Create New Doctor</h1>
 
+      {message && <p className={styles.message}>{message}</p>}
+
       <form className={styles.form} onSubmit={handleSubmit}>
-        {/* Title First */}
+        {/* Title */}
         <div className={styles.formGroup}>
-          <label htmlFor="title" className={styles.label}>Title</label>
+          <label htmlFor="title" className={styles.label}>
+            Title
+          </label>
           <select
             id="title"
             name="title"
@@ -39,16 +86,22 @@ const Doctor = () => {
             className={styles.selectField}
             required
           >
-            <option value="" disabled>Select Title</option>
+            <option value="" disabled>
+              Select Title
+            </option>
             {titles.map((title, index) => (
-              <option key={index} value={title}>{title}</option>
+              <option key={index} value={title}>
+                {title}
+              </option>
             ))}
           </select>
         </div>
 
         {/* First Name */}
         <div className={styles.formGroup}>
-          <label htmlFor="firstName" className={styles.label}>First Name</label>
+          <label htmlFor="firstName" className={styles.label}>
+            First Name
+          </label>
           <input
             type="text"
             id="firstName"
@@ -62,7 +115,9 @@ const Doctor = () => {
 
         {/* Last Name */}
         <div className={styles.formGroup}>
-          <label htmlFor="lastName" className={styles.label}>Last Name</label>
+          <label htmlFor="lastName" className={styles.label}>
+            Last Name
+          </label>
           <input
             type="text"
             id="lastName"
@@ -76,7 +131,9 @@ const Doctor = () => {
 
         {/* Specialist */}
         <div className={styles.formGroup}>
-          <label htmlFor="specialist" className={styles.label}>Specialist</label>
+          <label htmlFor="specialist" className={styles.label}>
+            Specialist
+          </label>
           <select
             id="specialist"
             name="specialist"
@@ -85,14 +142,52 @@ const Doctor = () => {
             className={styles.selectField}
             required
           >
-            <option value="" disabled>Select Specialist</option>
+            <option value="" disabled>
+              Select Specialist
+            </option>
             {specialists.map((spec, index) => (
-              <option key={index} value={spec}>{spec}</option>
+              <option key={index} value={spec}>
+                {spec}
+              </option>
             ))}
           </select>
         </div>
 
-        <button type="submit" className={styles.submitButton}>Create Doctor</button>
+        {/* Email */}
+        <div className={styles.formGroup}>
+          <label htmlFor="email" className={styles.label}>
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className={styles.inputField}
+            required
+          />
+        </div>
+
+        {/* Password */}
+        <div className={styles.formGroup}>
+          <label htmlFor="password" className={styles.label}>
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            className={styles.inputField}
+            required
+          />
+        </div>
+
+        <button type="submit" className={styles.submitButton} disabled={loading}>
+          {loading ? "Creating..." : "Create Doctor"}
+        </button>
       </form>
     </div>
   );

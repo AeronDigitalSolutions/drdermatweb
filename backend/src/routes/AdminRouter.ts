@@ -4,10 +4,10 @@ import Admin from '../models/admin';
 
 const router = express.Router();
 
-// ✅ Route used by frontend: POST /api/admins
+// ✅ Create new admin
 router.post('/', createAdmin);
 
-// GET /api/admins - Get all admins
+// ✅ Get all admins
 router.get('/', async (req, res) => {
   try {
     const admins = await Admin.find().select('-password');
@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// DELETE /api/admins/:id
+// ✅ Delete admin
 router.delete('/:id', async (req, res) => {
   try {
     const admin = await Admin.findByIdAndDelete(req.params.id);
@@ -28,20 +28,25 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// PUT /api/admins/:id
+// ✅ Update admin (including role)
 router.put('/:id', async (req, res) => {
-  const { name, email, number } = req.body;
+  const { name, email, number, role } = req.body;
 
   try {
     const updatedAdmin = await Admin.findByIdAndUpdate(
       req.params.id,
-      { name, email, number },
+      { name, email, number, role }, // ✅ now includes role
       { new: true, runValidators: true }
-    );
+    ).select("-password");
 
-    if (!updatedAdmin) return res.status(404).json({ message: 'Admin not found' });
+    if (!updatedAdmin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
 
-    res.json(updatedAdmin);
+    res.json({
+      message: "Admin updated successfully",
+      admin: updatedAdmin,
+    });
   } catch (err) {
     res.status(500).json({ message: 'Server error while updating admin' });
   }

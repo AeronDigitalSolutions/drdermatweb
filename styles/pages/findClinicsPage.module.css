@@ -9,6 +9,7 @@
   width: 16%;
 }
 
+
 .main {
   flex: 1;
 }
@@ -36,7 +37,8 @@
 }
 
 .active {
-  background-color: #1769aa;
+  background-color: #155E95
+;
   color: white;
 }
 
@@ -114,4 +116,40 @@
   .searchBar {
     width: 100%;
   }
+}
+/* Search bar wrapper to mimic screenshot design */
+.searchWrapper {
+     width: 93%;
+    display: flex
+;
+    justify-content: end;
+    margin-bottom: 20px;
+}
+
+.searchBarSC {
+ width: 100%;
+    max-width: 520px;
+    padding: 20px 27px;
+    font-size: 15px;
+    border: none;
+    border-radius: 35px;
+    height: 40px;
+    background-color: #FDF3D4;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+
+.searchButton {
+ position: relative;
+    margin-left: -58px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 29px;
+    color: #333;
+}
+
+/* Remove Find Clinics title completely */
+.title {
+  display: none;
 }

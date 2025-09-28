@@ -1,31 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "@/styles/components/homePage/categories.module.css";
 import { useRouter } from "next/router";
 
-interface Category {
+interface ClinicCategory {
+  _id: string;
   name: string;
-  image: string;
+  imageUrl: string;
 }
 
 interface ClinicCategoryProps {
   title: string;
-  categories?: Category[];
   backgroundColor?: string;
   textBg?: string;
   border?: string;
 }
-
-const categories: Category[] = [
-  { name: "General Physician", image: "/genral.png" },
-  { name: "Skin & Hair", image: "/women.png" },
-  { name: "Women's Health", image: "/skin_hair.png" },
-  { name: "Child Specialist", image: "/child.png" },
-  { name: "Ear, Nose, Throat", image: "/ear.png" },
-  { name: "Mental Wellness", image: "/mental.png" },
-  { name: "Dental Care", image: "/dental.png" },
-  { name: "More", image: "/twenty.png" },
-  { name: "20+ More ", image: "/twenty.png" },
-];
 
 const ClinicCategories: React.FC<ClinicCategoryProps> = ({
   title,
@@ -34,12 +22,32 @@ const ClinicCategories: React.FC<ClinicCategoryProps> = ({
   border,
 }) => {
   const router = useRouter();
+  const [categories, setCategories] = useState<ClinicCategory[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleCategoryClick = (categoryName: string) => {
-    if (categoryName === "More") {
-      router.push("/products/productListing");
-    }
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/clinic-categories");
+        if (!res.ok) throw new Error("Failed to fetch categories");
+        const data: ClinicCategory[] = await res.json();
+        setCategories(data);
+      } catch (err) {
+        console.error("Error fetching clinic categories:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const handleCategoryClick = (category: ClinicCategory) => {
+    // Redirect to find-clinics page with category query parameter
+router.push(`/home/findClinicsPage?category=${category._id}`);
   };
+
+  if (loading) return <p>Loading categories...</p>;
 
   return (
     <div
@@ -48,13 +56,11 @@ const ClinicCategories: React.FC<ClinicCategoryProps> = ({
     >
       <h2 className={styles.clinicTitle}>{title}</h2>
       <div className={styles.gridContainer}>
-        {categories.map((category, index) => (
+        {categories.map((category) => (
           <div
-            key={index}
-            className={`${styles.categoryCard} ${
-              category.name === "More" ? styles.mobileOnly : ""
-            }`}
-            onClick={() => handleCategoryClick(category.name)}
+            key={category._id}
+            className={styles.categoryCard}
+            onClick={() => handleCategoryClick(category)}
             style={{
               cursor: "pointer",
               backgroundColor: textBg || "#D9EBFD",
@@ -62,11 +68,10 @@ const ClinicCategories: React.FC<ClinicCategoryProps> = ({
             }}
           >
             <img
-              src={category.image}
+              src={category.imageUrl}
               alt={category.name}
               className={styles.categoryImg}
             />
-            <p className={styles.categoryText}>{category.name}</p>
           </div>
         ))}
       </div>

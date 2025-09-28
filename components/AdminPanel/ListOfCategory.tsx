@@ -1,18 +1,19 @@
+// components/ListOfCategory.tsx
+"use client";
+
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/Dashboard/listofcategory.module.css";
 
 interface Category {
-  _id: string;
+  id: string;
   name: string;
-  type: string;
-  imageUrl: string; // base64 string
+  imageUrl: string;
 }
 
 const ListOfCategory = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [editName, setEditName] = useState("");
-  const [editType, setEditType] = useState("product");
   const [editImage, setEditImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [error, setError] = useState("");
@@ -25,7 +26,16 @@ const ListOfCategory = () => {
     try {
       const res = await fetch("http://localhost:5000/api/categories");
       const data = await res.json();
-      setCategories(data);
+
+      const validCategories = data
+        .map((cat: any) => ({
+          id: cat.id,
+          name: cat.name,
+          imageUrl: cat.imageUrl,
+        }))
+        .filter((cat: Category) => cat.id && cat.id.trim() !== "");
+
+      setCategories(validCategories);
     } catch (error) {
       console.error("Failed to fetch categories:", error);
     }
@@ -33,19 +43,12 @@ const ListOfCategory = () => {
 
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this category?")) return;
-
     try {
       const res = await fetch(`http://localhost:5000/api/categories/${id}`, {
         method: "DELETE",
       });
-      const data = await res.json();
-
-      if (!res.ok) {
-        alert(data.message || "Failed to delete category");
-        return;
-      }
-
-      setCategories((prev) => prev.filter((cat) => cat._id !== id));
+      if (!res.ok) throw new Error("Failed to delete category");
+      setCategories((prev) => prev.filter((cat) => cat.id !== id));
     } catch (error) {
       console.error("Delete error:", error);
     }
@@ -54,7 +57,6 @@ const ListOfCategory = () => {
   const handleEdit = (cat: Category) => {
     setEditingCategory(cat);
     setEditName(cat.name);
-    setEditType(cat.type);
     setPreviewUrl(cat.imageUrl);
     setEditImage(null);
     setError("");
@@ -67,25 +69,22 @@ const ListOfCategory = () => {
         setError("Image must be ≤ 1MB");
         return;
       }
-
       setError("");
       setEditImage(file);
       setPreviewUrl(URL.createObjectURL(file));
     }
   };
 
-  const convertToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
+  const convertToBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result as string);
       reader.onerror = (err) => reject(err);
     });
-  };
 
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!editName.trim()) {
       setError("Category name is required");
       return;
@@ -93,37 +92,21 @@ const ListOfCategory = () => {
 
     try {
       let imageUrl = previewUrl;
-
-      if (editImage) {
-        if (editImage.size > 1024 * 1024) {
-          setError("Image must be ≤ 1MB");
-          return;
-        }
-        imageUrl = await convertToBase64(editImage);
-      }
+      if (editImage) imageUrl = await convertToBase64(editImage);
 
       const res = await fetch(
-        `http://localhost:5000/api/categories/${editingCategory?._id}`,
+        `http://localhost:5000/api/categories/${editingCategory?.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: editName.trim(),
-            type: editType,
-            imageUrl,
-          }),
+          body: JSON.stringify({ name: editName.trim(), imageUrl }),
         }
       );
+      if (!res.ok) throw new Error("Failed to update category");
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || "Failed to update category");
-        return;
-      }
-
+      const updated = await res.json();
       setCategories((prev) =>
-        prev.map((cat) => (cat._id === data._id ? data : cat))
+        prev.map((cat) => (cat.id === updated.id ? updated : cat))
       );
 
       setEditingCategory(null);
@@ -150,34 +133,25 @@ const ListOfCategory = () => {
           <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Type</th>
             <th>Image</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {categories.map((cat, index) => (
-            <tr key={cat._id}>
-              <td>{`Cat-${index + 1}`}</td>
+          {categories.map((cat) => (
+            <tr key={cat.id}>
+              <td>{cat.id}</td>
               <td>{cat.name}</td>
-              <td>{cat.type}</td>
               <td>
-                <img
-                  src={cat.imageUrl}
-                  alt={cat.name}
-                  className={styles.image}
-                />
+                <img src={cat.imageUrl} alt={cat.name} className={styles.image} />
               </td>
               <td>
-                <button
-                  className={styles.editBtn}
-                  onClick={() => handleEdit(cat)}
-                >
+                <button className={styles.editBtn} onClick={() => handleEdit(cat)}>
                   Edit
                 </button>
                 <button
                   className={styles.deleteBtn}
-                  onClick={() => handleDelete(cat._id)}
+                  onClick={() => handleDelete(cat.id)}
                 >
                   Delete
                 </button>
@@ -193,6 +167,9 @@ const ListOfCategory = () => {
             <h3>Edit Category</h3>
             {error && <p className={styles.error}>{error}</p>}
             <form onSubmit={handleEditSubmit}>
+              <label>Category ID</label>
+              <input type="text" value={editingCategory.id} disabled />
+
               <label>Category Name</label>
               <input
                 type="text"
@@ -201,51 +178,15 @@ const ListOfCategory = () => {
                 required
               />
 
-              <label>Category Type</label>
-              <div className={styles.radioGroup}>
-                <label>
-                  <input
-                    type="radio"
-                    value="product"
-                    checked={editType === "product"}
-                    onChange={(e) => setEditType(e.target.value)}
-                  />
-                  Product
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="service"
-                    checked={editType === "service"}
-                    onChange={(e) => setEditType(e.target.value)}
-                  />
-                  Service
-                </label>
-              </div>
-
               <label>Category Image (Max 1MB)</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-              {previewUrl && (
-                <img
-                  src={previewUrl}
-                  className={styles.preview}
-                  alt="Preview"
-                />
-              )}
+              <input type="file" accept="image/*" onChange={handleImageChange} />
+              {previewUrl && <img src={previewUrl} className={styles.preview} />}
 
               <div className={styles.modalActions}>
                 <button type="submit" className={styles.saveBtn}>
                   Save
                 </button>
-                <button
-                  type="button"
-                  className={styles.cancelBtn}
-                  onClick={handleCloseModal}
-                >
+                <button type="button" className={styles.cancelBtn} onClick={handleCloseModal}>
                   Cancel
                 </button>
               </div>

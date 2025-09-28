@@ -9,14 +9,22 @@ const CreateAdmin = () => {
     email: "",
     number: "",
     password: "",
+    role: "admin", // ✅ default role
   });
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+
+    if (name === "role" && type === "checkbox") {
+      // ✅ if checkbox checked, role = superadmin
+      setFormData(prev => ({ ...prev, role: checked ? "superadmin" : "admin" }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+
     setError("");
     setSuccess("");
   };
@@ -24,7 +32,7 @@ const CreateAdmin = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("🔍 Submitting admin data:", formData); // helpful for debugging
+    console.log("🔍 Submitting admin data:", formData);
 
     try {
       const res = await fetch("http://localhost:5000/api/admins", {
@@ -40,7 +48,14 @@ const CreateAdmin = () => {
       if (!res.ok) throw new Error(data.message || "Failed to create admin");
 
       setSuccess("✅ Admin created successfully!");
-      setFormData({ empId: "", name: "", email: "", number: "", password: "" });
+      setFormData({
+        empId: "",
+        name: "",
+        email: "",
+        number: "",
+        password: "",
+        role: "admin",
+      });
     } catch (err: any) {
       setError(`❌ ${err.message}`);
     }
@@ -108,6 +123,18 @@ const CreateAdmin = () => {
           onChange={handleChange}
           required
         />
+
+        {/* ✅ Checkbox for Superadmin */}
+        <div className={styles.checkboxContainer}>
+          <input
+            type="checkbox"
+            id="role"
+            name="role"
+            checked={formData.role === "superadmin"}
+            onChange={handleChange}
+          />
+          <label htmlFor="role">Make Superadmin</label>
+        </div>
 
         <button type="submit" className={styles.button}>Create Admin</button>
       </form>

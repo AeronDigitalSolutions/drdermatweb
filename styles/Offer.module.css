@@ -1,7 +1,7 @@
 .sliderWrapper {
   width: 90%;
-  height: 50vh;
-  margin: 2rem auto;
+  max-width: 1200px;
+  margin: 1rem auto;
   overflow: hidden;
   position: relative;
   border-radius: 8px;
@@ -10,23 +10,18 @@
 .slider {
   display: flex;
   transition: transform 0.5s ease-in-out;
-  height: 100%;
+  height: auto; /* ✅ Allow height to adjust to image */
 }
+
 .slide {
   flex: 0 0 100%;
-  height: 100%;
   position: relative; /* Required for next/image layout="fill" */
 }
 
 .slide img {
-  border-radius: 8px;
-}
-
-
-.slide img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;        /* ✅ Maintain aspect ratio */
+  object-fit: contain;  /* ✅ Show complete image */
   display: block;
   border-radius: 8px;
 }
@@ -52,9 +47,38 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+
+/* Tablets & large phones */
+@media (max-width: 1024px) {
   .sliderWrapper {
     width: 95%;
-    height: 18vh;
+  }
+
+  .slide img {
+    height: auto;
+  }
+}
+
+/* Small phones (480px) */
+@media (max-width: 480px) {
+  .sliderWrapper {
+    width: 98%;
+    margin: 0.5rem auto;
+  }
+
+  .slide img {
+    height: auto;
+  }
+}
+
+/* Extra small phones (≤370px) */
+@media (max-width: 370px) {
+  .sliderWrapper {
+    width: 100%;
+    margin: 0.5rem auto;
+  }
+
+  .slide img {
+    height: auto;
   }
 }

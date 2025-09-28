@@ -1,109 +1,185 @@
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import styles from "@/styles/quiz/ques1.module.css";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import Footer from "@/components/Layout/Footer";
 import Topbar from "@/components/Layout/Topbar";
-import React, { useState } from 'react';
-const ChooseConcern = () => {
-  const router = useRouter();
+import Footer from "@/components/Layout/Footer";
 
-  const handleClick = (concern: string) => {
-    router.push("/quiz/ques2"); // Redirect to /quiz/skin or /quiz/hair
+interface Option {
+  text: string;
+  isCorrect: boolean;
+}
+
+interface Question {
+  _id: string;
+  category: "Hair" | "Skin";
+  question: string;
+  options: Option[];
+  type: "single" | "multiple";
+}
+
+const categories: { key: "Hair" | "Skin"; label: string; img: string }[] = [
+  { key: "Skin", label: "Skin", img: "/skin.png" },
+  { key: "Hair", label: "Hair", img: "/hair.png" },
+];
+
+const UserQuiz: React.FC = () => {
+  const [activeCategory, setActiveCategory] = useState<"Hair" | "Skin" | null>(null);
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<string, number[]>>({});
+  const [showSummary, setShowSummary] = useState(false);
+
+  useEffect(() => {
+    if (!activeCategory) return;
+    fetchQuestions(activeCategory);
+  }, [activeCategory]);
+
+  const fetchQuestions = async (category: "Hair" | "Skin") => {
+    try {
+      const res = await axios.get<Question[]>(`http://localhost:5000/api/quiz/${category}`);
+      setQuestions(res.data);
+      setCurrentIndex(0);
+      setSelectedAnswers({});
+      setShowSummary(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
+  const handleCategorySelect = (category: "Hair" | "Skin") => setActiveCategory(category);
 
-// const [selectedOption, setSelectedOption] = useState<string>('');
-//   const router = useRouter();
+  const handleOptionChange = (questionId: string, optionIndex: number, type: "single" | "multiple") => {
+    setSelectedAnswers((prev) => {
+      const prevSelected = prev[questionId] || [];
+      if (type === "single") return { ...prev, [questionId]: [optionIndex] };
+      if (prevSelected.includes(optionIndex)) {
+        return { ...prev, [questionId]: prevSelected.filter((i) => i !== optionIndex) };
+      } else {
+        return { ...prev, [questionId]: [...prevSelected, optionIndex] };
+      }
+    });
+  };
 
-//   const handleOptionChange = (value: string) => {
-//     setSelectedOption(value);
+  const handleNext = () => {
+    if (currentIndex < questions.length - 1) setCurrentIndex(currentIndex + 1);
+    else setShowSummary(true);
+  };
 
-//     // Simulate saving the answer and navigate to next step
-//     setTimeout(() => {
-//       router.push('ques2'); // Update this to your actual next page route
-//     }, 300);
-//   };
+  const handlePrev = () => {
+    if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
+  };
 
+  const handleRestart = () => {
+    setActiveCategory(null);
+    setQuestions([]);
+    setSelectedAnswers({});
+    setCurrentIndex(0);
+    setShowSummary(false);
+  };
 
+  if (!activeCategory) {
+    return (
+      <>
+        <Topbar />
+        <div className={styles.pageWrapper}>
+          <div className={styles.cardWrapper}>
+            <h2 className={styles.mainHeading}>Choose Your Concern</h2>
+            <div className={styles.categoryGrid}>
+              {categories.map((cat) => (
+                <div key={cat.key} className={styles.categoryCard}>
+                  <img src={cat.img} alt={cat.label} className={styles.categoryImg} />
+                  <p className={styles.categoryLabel}>{cat.label}</p>
+                  <button className={styles.ctaBtn} onClick={() => handleCategorySelect(cat.key)}>
+                    Click Here
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  if (questions.length === 0) return <p>Loading questions...</p>;
+
+  const currentQuestion = questions[currentIndex];
+  const selected = selectedAnswers[currentQuestion._id] || [];
 
   return (
     <>
-    <div className={styles.topbar}>
-    <Topbar/>
-
-    </div>
-    <div className={styles.container}>
-      <div className={styles.card}>
-                <h2 className={styles.heading}>Take A Test</h2>
-        <h2 className={styles.heading}>Choose Your Concern</h2>
-        <div className={styles.options}>
-          <div className={styles.optionCard}>
-            <Image
-              src="/skin1.png" // Place image in public/images folder
-              alt="Skin"
-              width={120}
-              height={120}
-              className={styles.image}
-            />
-            <p className={styles.label}>Skin</p>
-            <button className={styles.button} onClick={() => handleClick("skin")}>
-              Click Here
-            </button>
-          </div>
-          <div className={styles.optionCard}>
-            <Image
-              src="/hair.png" // Place image in public/images folder
-              alt="Hair"
-              width={120}
-              height={120}
-              className={styles.image}
-            />
-            <p className={styles.label}>Hair</p>
-            <button className={styles.button} onClick={() => handleClick("hair")}>
-              Click Here
-            </button>
-          </div>
+      <Topbar />
+      <div className={styles.pageWrapper}>
+        <div className={styles.cardWrapper}>
+          {!showSummary ? (
+            <>
+              <h2 className={styles.mainHeading}>{currentQuestion.question}</h2>
+              <div className={styles.optionList}>
+                {currentQuestion.options.map((opt, i) => (
+                  <label
+                    key={i}
+                    className={`${styles.optionRow} ${
+                      selected.includes(i) ? styles.optionSelected : ""
+                    }`}
+                  >
+                    <input
+                      type={currentQuestion.type === "single" ? "radio" : "checkbox"}
+                      checked={selected.includes(i)}
+                      readOnly
+                    />
+                    <span>{opt.text}</span>
+                  </label>
+                ))}
+              </div>
+              <div className={styles.navButtons}>
+                {currentIndex > 0 && (
+                  <button className={styles.navBtn} onClick={handlePrev}>
+                    Previous
+                  </button>
+                )}
+                {currentIndex < questions.length - 1 ? (
+                  <button className={styles.navBtn} onClick={handleNext}>
+                    Next
+                  </button>
+                ) : (
+                  <button className={styles.navBtn} onClick={() => setShowSummary(true)}>
+                    Finish
+                  </button>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className={styles.summaryBox}>
+              <h2 className={styles.mainHeading}>Quiz Summary ({activeCategory})</h2>
+              {questions.map((q) => {
+                const userSelected = selectedAnswers[q._id] || [];
+                return (
+                  <div key={q._id} className={styles.summaryItem}>
+                    <p className={styles.summaryQ}>{q.question}</p>
+                    <ul>
+                      {q.options.map((opt, i) => (
+                        <li
+                          key={i}
+                          className={userSelected.includes(i) ? styles.optionSelected : ""}
+                        >
+                          {opt.text} {userSelected.includes(i) ? "(Selected)" : ""}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
+              <button className={styles.ctaBtn} onClick={handleRestart}>
+                Restart
+              </button>
+            </div>
+          )}
         </div>
       </div>
-    </div>
-
-
-    {/* <div className={styles.container}>
-      <div className={styles.header}>
-        <a className={styles.backLink} href="#">← Previous</a>
-        <a className={styles.exitLink} href="#">Exit</a>
-      </div>
-
-      <div className={styles.stepper}>
-        <div className={`${styles.step} ${styles.completed}`}>About<br />You</div>
-        <div className={`${styles.step} ${styles.completed}`}>Hair<br />Health</div>
-        <div className={`${styles.step} ${styles.active}`}>Internal<br />Health</div>
-        <div className={styles.step}>Scalp<br />Assessment</div>
-      </div>
-
-
-      <h2 className={styles.title}>How stressed are you?</h2>
-
-      <form className={styles.form}>
-        {['None', 'Low', 'Moderate(work, family etc )', 'High (Loss of close one, separation, home, illness)'].map(option => (
-          <label key={option} className={styles.radioLabel}>
-            <input type="radio"
-              name="stress"
-              value={option}
-              checked={selectedOption === option}
-              onChange={() => handleOptionChange(option)}
-            />
-            {option}
-          </label>
-        ))}
-      </form>
-    </div> */}
-<Footer/>
-    
-    
-</>
+      <Footer />
+    </>
   );
 };
 
-export default ChooseConcern;
+export default UserQuiz;
