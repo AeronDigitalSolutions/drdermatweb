@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // // import ModularForm from "@/components/forms/ModularForm";
+=======
+// import ModularForm from "@/components/forms/ModularForm";
+>>>>>>> origin/ankitDermat24
 // import Layout from "@/components/Layout/Layout";
 // import { createNewClinic } from "@/components/lib/api/clinics";
 // import { useSession } from "next-auth/react";

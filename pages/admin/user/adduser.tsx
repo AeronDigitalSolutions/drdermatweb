@@ -2,7 +2,11 @@
 // import { createNewUser } from "@/components/lib/api/user";
 // import { log } from "console";
 // import Layout from "@/components/Layout/Layout";
+<<<<<<< HEAD
 // import React from "react";
+=======
+// // import React from "react";
+>>>>>>> origin/ankitDermat24
 
 // function adduser() {
 //   function createUser(event: React.FormEvent<HTMLFormElement>) {
